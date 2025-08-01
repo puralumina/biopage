@@ -476,7 +476,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
                 </div>
               )}
               <div className="absolute top-3 left-3 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                🎥 PRODUCT PREVIEW
+                PREVIEW
               </div>
             </div>
           ) : (
