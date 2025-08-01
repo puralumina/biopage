@@ -62,7 +62,8 @@ const AdminDashboard: React.FC = () => {
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2000);
     } catch (err) {
-      setError('Failed to save changes. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save changes. Please try again.';
+      setError(errorMessage);
       console.error(err);
     } finally {
       setIsSaving(false);

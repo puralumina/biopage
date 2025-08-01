@@ -129,10 +129,30 @@ export const getPageData = async (): Promise<PageData> => {
 
 export const savePageData = async (data: PageData): Promise<void> => {
   try {
+    // Check if user is authenticated
+    const { auth } = await import('../firebase');
+    const user = auth.currentUser;
+    
+    if (!user) {
+      throw new Error("You must be logged in to save changes.");
+    }
+    
+    console.log("Current user UID:", user.uid);
+    
     await setDoc(pageDocRef, data);
   } catch (error) {
     console.error("Error saving page data:", error);
-    throw new Error("Could not save changes to the database.");
+    
+    if (error instanceof Error) {
+      if (error.message.includes('Missing or insufficient permissions')) {
+        throw new Error("Access denied. Your account doesn't have permission to save changes. Please contact the administrator.");
+      }
+      if (error.message.includes('You must be logged in')) {
+        throw error;
+      }
+    }
+    
+    throw new Error("Could not save changes to the database. Please try again.");
   }
 };
 
