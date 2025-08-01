@@ -1,8 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { getPageData, trackPageView, trackLinkClick } from '../services/pageService';
-import { PageData, Link as LinkType } from '../types';
-import PixelInjector from '../components/PixelInjector';
-import ProductCarousel from '../components/ProductCarousel';
+            style={getBlockStyle(link)}
 import { Lock, MapPin, Play, ShoppingCart, ExternalLink, Music } from 'lucide-react';
 
 const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }> = ({ link, onClick }) => {
@@ -24,7 +20,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
       return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
     }
     if (url.includes('youtu.be/')) {
-      const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+                  window.open(link.url, '_blank', 'noopener,noreferrer');
       return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
     }
     
@@ -43,7 +39,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
     return url;
   };
   const handleProtectedClick = (e: React.MouseEvent) => {
-    if (link.password) {
+                window.open(`/product/${productId}`, '_blank', 'noopener,noreferrer');
       e.preventDefault();
       const enteredPassword = prompt('This link is password protected. Please enter the password:');
       if (enteredPassword === link.password) {
@@ -60,7 +56,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
   const nextImage = () => {
     if (link.images) {
       setCurrentImageIndex((prev) => (prev + 1) % link.images!.length);
-    }
+        window.open(link.url, '_blank', 'noopener,noreferrer');
   };
 
   const prevImage = () => {
@@ -370,11 +366,15 @@ const BioPage: React.FC = () => {
 
   if (loading) {
     return (
+          <a
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+            href={link.url}
       </div>
+            target="_blank"
     );
+            rel="noopener noreferrer"
   }
+            onClick={() => onClick(link.id)}
 
   if (error || !pageData) {
     return (
@@ -389,11 +389,15 @@ const BioPage: React.FC = () => {
     if (link.schedule) {
       const now = new Date();
       const start = new Date(link.schedule.start);
+                        onClick={(e) => {
       const end = new Date(link.schedule.end);
-      return now >= start && now <= end;
+                          e.preventDefault();
     }
+                          e.stopPropagation();
     return true;
+                          prevImage();
   }).sort((a, b) => a.order - b.order);
+                        }}
 
   const { profile, theme, media, pixels } = pageData;
 
@@ -401,11 +405,15 @@ const BioPage: React.FC = () => {
     if (theme.backgroundType === 'gradient') {
       const gradientColors = theme.gradientColors.join(', ');
       return {
+                        onClick={(e) => {
         background: `linear-gradient(${theme.gradientDirection}, ${gradientColors})`,
-        color: theme.primaryColor,
+                          e.preventDefault();
         fontFamily: theme.font,
+                          e.stopPropagation();
       };
+                          nextImage();
     } else {
+                        }}
       return {
         backgroundColor: theme.backgroundColor,
         color: theme.primaryColor,
@@ -422,12 +430,16 @@ const BioPage: React.FC = () => {
         className="min-h-screen w-full flex flex-col items-center justify-start p-4 transition-all duration-500 relative"
       >
         {media.wallpaperUrl && (
-          <div 
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => onClick(link.id)}
             className="absolute inset-0 bg-cover bg-center z-0" 
             style={{ backgroundImage: `url(${media.wallpaperUrl})` }}
           />
+          </a>
         )}
-        {media.videoUrl && (
           <video 
             autoPlay 
             loop 
@@ -444,8 +456,8 @@ const BioPage: React.FC = () => {
           <header className="text-center flex flex-col items-center mb-10">
             <img 
               src={profile.imageUrl} 
+                  window.open(link.url, '_blank', 'noopener,noreferrer');
               alt={profile.name} 
-              className="w-28 h-28 rounded-full object-cover mb-4 border-4 border-white/50 shadow-lg" 
             />
             <h1 className="text-3xl font-bold text-white">{profile.name}</h1>
             <p className="text-lg text-blue-200 mt-1">{profile.subtitle}</p>
@@ -477,8 +489,8 @@ const BioPage: React.FC = () => {
                     </div>
                     {nextLink && nextLink.layout === 'twoColumns' && (
                       <div className="w-full">
+                  window.open(link.url, '_blank', 'noopener,noreferrer');
                         <LinkBlock link={nextLink} onClick={trackLinkClick} />
-                      </div>
                     )}
                   </div>
                 );
@@ -486,7 +498,7 @@ const BioPage: React.FC = () => {
               
               return <LinkBlock key={link.id} link={link} onClick={trackLinkClick} />;
             })}
-          </div>
+          </a>
 
           <footer className="mt-16 mb-8 text-center">
             <p className="text-white/60 text-sm">

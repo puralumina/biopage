@@ -49,7 +49,9 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title, onPr
           <div key={product.id} className="px-2">
             <div 
               className="bg-white/5 rounded-lg overflow-hidden cursor-pointer hover:bg-white/10 transition-all duration-300"
-              onClick={() => onProductClick(product.id)}
+              onClick={() => {
+                onProductClick(product.id);
+              }}
             >
               <div className="aspect-square bg-gray-200 rounded-t-lg overflow-hidden">
                 <img
