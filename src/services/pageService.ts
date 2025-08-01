@@ -115,7 +115,18 @@ export const getPageData = async (): Promise<PageData> => {
   try {
     const docSnap = await getDoc(pageDocRef);
     if (docSnap.exists()) {
-      return docSnap.data() as PageData;
+      const firestoreData = docSnap.data();
+      // Merge with default data to ensure all properties exist
+      return {
+        ...defaultPageData,
+        ...firestoreData,
+        profile: { ...defaultPageData.profile, ...firestoreData.profile },
+        theme: { ...defaultPageData.theme, ...firestoreData.theme },
+        media: { ...defaultPageData.media, ...firestoreData.media },
+        pixels: { ...defaultPageData.pixels, ...firestoreData.pixels },
+        analytics: { ...defaultPageData.analytics, ...firestoreData.analytics },
+        links: firestoreData.links || defaultPageData.links,
+      } as PageData;
     } else {
       console.log("Document doesn't exist. Creating default document...");
       // Try to create the document with default data if it doesn't exist
