@@ -145,10 +145,29 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
   const getBlockStyle = (link: LinkType): React.CSSProperties => {
     const styling = link.styling || {};
+    
+    // Handle background color with opacity
+    let backgroundColor = styling.backgroundColor || 'rgba(255, 255, 255, 0.1)';
+    if (styling.opacity !== undefined && styling.opacity !== 100) {
+      // If it's a hex color, convert to rgba with opacity
+      if (backgroundColor.startsWith('#')) {
+        const hex = backgroundColor.replace('#', '');
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+        backgroundColor = `rgba(${r}, ${g}, ${b}, ${styling.opacity / 100})`;
+      } else if (backgroundColor.startsWith('rgba')) {
+        // If it's already rgba, replace the alpha value
+        backgroundColor = backgroundColor.replace(/,\s*[\d.]+\)$/, `, ${styling.opacity / 100})`);
+      } else if (backgroundColor.startsWith('rgb')) {
+        // If it's rgb, convert to rgba
+        backgroundColor = backgroundColor.replace('rgb', 'rgba').replace(')', `, ${styling.opacity / 100})`);
+      }
+    }
+    
     return {
-      backgroundColor: styling.backgroundColor || 'rgba(255, 255, 255, 0.1)',
+      backgroundColor,
       borderColor: styling.borderColor || 'rgba(255, 255, 255, 0.2)',
-      opacity: styling.opacity !== undefined ? styling.opacity / 100 : 1,
     };
   };
 
