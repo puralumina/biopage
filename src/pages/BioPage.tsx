@@ -236,18 +236,18 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
           style={getBlockStyle(link)}
         >
-          <div className="aspect-video bg-black">
+          <div className="aspect-video bg-black rounded-t-lg overflow-hidden">
             <iframe
               src={getEmbedUrl(link.url)}
               title={link.title}
-              className="w-full h-full border-0"
+              className="w-full h-full border-0 rounded-t-lg"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
               onLoad={() => onClick(link.id)}
               loading="lazy"
             />
           </div>
-          <div className="p-3">
+          <div className="p-3 bg-black/20 backdrop-blur-sm">
             <h3 className="font-medium text-white text-center">{link.title}</h3>
           </div>
         </div>
