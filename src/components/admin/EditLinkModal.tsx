@@ -41,6 +41,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
     { value: 'product', label: 'Product' },
     { value: 'featuredProducts', label: 'Featured Products' },
     { value: 'textSection', label: 'Text Section' },
+    { value: 'paragraphSpacing', label: 'Paragraph Spacing' },
   ];
 
   return (

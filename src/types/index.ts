@@ -53,7 +53,8 @@ export type LinkType =
   | 'liveTwitch'
   | 'product'
   | 'featuredProducts';
-  | 'textSection';
+  | 'textSection'
+  | 'paragraphSpacing';
 
 export interface Link {
   id: string;
@@ -83,6 +84,8 @@ export interface Link {
     borderColor?: string;
     opacity?: number;
   };
+  spacingSize?: 'small' | 'medium' | 'large' | 'xlarge' | 'custom';
+  customSpacing?: number;
   textContent?: {
     type: 'heading' | 'paragraph';
     content: string;
