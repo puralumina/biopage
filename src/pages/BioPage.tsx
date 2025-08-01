@@ -290,10 +290,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'product':
       return (
-        <a
-          href={link.url}
-          target={link.openInNewWindow !== false ? "_blank" : "_self"}
-          rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
+        <div 
           className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
           style={getBlockStyle(link)}
         >
@@ -317,7 +314,11 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
             <button
               onClick={() => {
                 onClick(link.id);
-                window.open(link.url, '_blank');
+                if (link.openInNewWindow !== false) {
+                  window.open(link.url, '_blank', 'noopener,noreferrer');
+                } else {
+                  window.location.href = link.url;
+                }
               }}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
             >
@@ -325,7 +326,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
               Buy Now
             </button>
           </div>
-        </a>
+        </div>
       );
 
     case 'featuredProducts':

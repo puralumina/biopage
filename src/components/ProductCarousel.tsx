@@ -50,7 +50,12 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title, onPr
             <div 
               className="bg-white/5 rounded-lg overflow-hidden cursor-pointer hover:bg-white/10 transition-all duration-300"
               onClick={() => {
-                onProductClick(product.id);
+                onClick(link.id);
+                if (link.openInNewWindow !== false) {
+                  window.open(`/product/${product.id}`, '_blank', 'noopener,noreferrer');
+                } else {
+                  window.location.href = `/product/${product.id}`;
+                }
               }}
             >
               <div className="aspect-square bg-gray-200 rounded-t-lg overflow-hidden">
