@@ -146,6 +146,34 @@ const defaultPageData: PageData = {
           inStock: true,
         },
       ],
+    },
+    {
+      id: '9',
+      type: 'standard',
+      title: '🛍️ Visit Our Shop',
+      url: '/shop',
+      order: 8,
+      active: true,
+      thumbnailUrl: 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg',
+      styling: {
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        borderColor: 'rgba(59, 130, 246, 0.3)',
+        opacity: 1
+      }
+    },
+    {
+      id: '10',
+      type: 'standard',
+      title: '📷 Professional Camera - $250',
+      url: '/product/1',
+      order: 9,
+      active: true,
+      thumbnailUrl: 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg',
+      styling: {
+        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+        borderColor: 'rgba(34, 197, 94, 0.3)',
+        opacity: 1
+      }
     }
   ],
   analytics: {
