@@ -16,25 +16,16 @@ const AdminLogin: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Demo credentials check
-    if (email === 'admin' && password === 'biopage123') {
-      setLoading(true);
-      setError('');
-      
-      try {
-        // For demo purposes, we'll create a demo user
-        await login('admin@biopage.com', 'biopage123');
-        navigate('/admin');
-      } catch (err: any) {
-        // If Firebase auth fails, we'll use localStorage for demo
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user', JSON.stringify({ email: 'admin@biopage.com', uid: 'demo-user' }));
-        navigate('/admin');
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      setError('Invalid credentials. Use "admin" and "biopage123"');
+    setLoading(true);
+    setError('');
+    
+    try {
+      await login(email, password);
+      navigate('/admin');
+    } catch (err: any) {
+      setError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,14 +43,14 @@ const AdminLogin: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Username
+              Email
             </label>
             <input
-              type="text"
+              type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your username"
+              placeholder="Enter your email"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
               disabled={loading}
             />
@@ -98,9 +89,8 @@ const AdminLogin: React.FC = () => {
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-blue-600 text-sm">
-              <strong>Demo Credentials:</strong><br />
-              Username: admin<br />
-              Password: biopage123
+              <strong>Note:</strong><br />
+              Use your Firebase authentication credentials to login.
             </p>
           </div>
 
