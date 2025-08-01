@@ -108,26 +108,51 @@ const getDeepLinkUrl = (url: string): string => {
 
 const handleDeepLink = (url: string, openInNewWindow: boolean = true) => {
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const isAndroid = /Android/i.test(navigator.userAgent);
   
   if (isMobile) {
     const deepLinkUrl = getDeepLinkUrl(url);
     
     if (deepLinkUrl !== url) {
-      // Try to open the app first
-      try {
-        window.location.href = deepLinkUrl;
-      } catch (e) {
-        console.log('App not available, opening web version');
+      // For Android, use intent URLs for better app detection
+      if (isAndroid && url.includes('youtube.com')) {
+        const videoId = url.includes('watch?v=') ? url.split('v=')[1]?.split('&')[0] : null;
+        if (videoId) {
+          // Try YouTube app intent first
+          const intentUrl = `intent://www.youtube.com/watch?v=${videoId}#Intent;package=com.google.android.youtube;scheme=https;end`;
+          try {
+            window.location.href = intentUrl;
+            return;
+          } catch (e) {
+            console.log('YouTube app intent failed, trying deep link');
+          }
+        }
       }
       
-      // Fallback to web URL after a short delay if app doesn't open
+      // Try deep link for all mobile devices
+      let appOpened = false;
+      
+      // Create a hidden iframe to attempt app opening
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = deepLinkUrl;
+      document.body.appendChild(iframe);
+      
+      // Set a flag to track if we've left the page (app opened)
+      const startTime = Date.now();
+      
       setTimeout(() => {
-        if (openInNewWindow) {
-          window.open(url, '_blank', 'noopener,noreferrer');
-        } else {
-          window.location.href = url;
+        document.body.removeChild(iframe);
+        
+        // If we're still on the page after 2 seconds, app probably didn't open
+        if (Date.now() - startTime < 2100) {
+          if (openInNewWindow) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+          } else {
+            window.location.href = url;
+          }
         }
-      }, 2500);
+      }, 2000);
       
       return;
     }
@@ -234,6 +259,8 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
             e.preventDefault();
             handleProtectedClick(e);
             if (!link.password) {
+             // Force click tracking before navigation
+             onClick(link.id);
               handleDeepLink(link.url, link.openInNewWindow !== false);
             }
           }}
