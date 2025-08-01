@@ -68,7 +68,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ data, setData }) => {
                 ...newTheme,
                 preset: preset,
             }
-        }
+        };
     });
   };
 
@@ -289,103 +289,6 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ data, setData }) => {
             </div>
           </div>
           
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Font Family</label>
-            <select 
-              value={data.theme.font} 
-              onChange={(e) => handleUpdate('theme', 'font', e.target.value)} 
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="Inter, sans-serif">Inter</option>
-              <option value="Roboto, sans-serif">Roboto</option>
-              <option value="Poppins, sans-serif">Poppins</option>
-              <option value="Montserrat, sans-serif">Montserrat</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      
-      {/* Media */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-          <span className="text-green-500">🖼️</span>
-          Media
-        </h3>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">📱 Wallpaper Image URL</label>
-            <input 
-              type="url" 
-              value={data.media.wallpaperUrl} 
-              onChange={(e) => handleUpdate('media', 'wallpaperUrl', e.target.value)} 
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">📹 Video Wallpaper URL</label>
-            <input 
-              type="url" 
-              value={data.media.videoUrl} 
-              onChange={(e) => handleUpdate('media', 'videoUrl', e.target.value)} 
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">🌟 Favicon URL</label>
-            <input 
-              type="url" 
-              value={data.media.faviconUrl} 
-              onChange={(e) => handleUpdate('media', 'faviconUrl', e.target.value)} 
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Marketing & Tracking Pixels */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Marketing & Tracking Pixels</h3>
-        <p className="text-sm text-gray-600 mb-4">
-          Add tracking pixels and scripts that will be injected into the public page.
-        </p>
-        <div className="space-y-4">
-          {(Object.keys(data.pixels) as Array<keyof typeof data.pixels>).map(key => (
-            <div key={key}>
-              <label className="block text-sm font-medium text-gray-700 mb-2 capitalize">
-                {key.replace(/([A-Z])/g, ' $1')}
-              </label>
-              <textarea
-                value={data.pixels[key]}
-                onChange={(e) => handleUpdate('pixels', key, e.target.value)}
-                placeholder={`Paste your ${key.replace(/([A-Z])/g, ' $1')} code here...`}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default SettingsTab;
-              <div className="flex items-center gap-3">
-                <input 
-                  type="color" 
-                  value={data.theme.backgroundColor} 
-                  onChange={(e) => handleUpdate('theme', 'backgroundColor', e.target.value)} 
-                  className="w-12 h-10 rounded border border-gray-300" 
-                />
-                <input 
-                  type="text" 
-                  value={data.theme.backgroundColor} 
-                  onChange={(e) => handleUpdate('theme', 'backgroundColor', e.target.value)} 
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                />
-              </div>
-            </div>
-          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Font Family</label>
             <select 
