@@ -64,6 +64,7 @@ export interface Link {
   title: string;
   url: string;
   thumbnailUrl?: string;
+  thumbnailType?: 'image' | 'video';
   password?: string;
   openInNewWindow?: boolean;
   schedule?: {

@@ -458,18 +458,41 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
           style={getBlockStyle(link)}
         >
-          <div className="relative">
-            <img
-              src={link.thumbnailUrl || 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg'}
-              alt={link.title}
-              className="w-full h-48 object-cover"
-            />
-            {link.price && (
-              <div className="absolute top-3 right-3 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold">
-                {link.currency === 'USD' && '$'}{link.currency === 'EUR' && '€'}{link.currency === 'GBP' && '£'}{link.price}
+          {link.thumbnailType === 'video' && link.thumbnailUrl ? (
+            <div className="relative">
+              <div className="aspect-video bg-black overflow-hidden">
+                <iframe
+                  src={getEmbedUrl(link.thumbnailUrl)}
+                  title={`${link.title} - Product Preview`}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                />
               </div>
-            )}
-          </div>
+              {link.price && (
+                <div className="absolute top-3 right-3 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                  {link.currency === 'USD' && '$'}{link.currency === 'EUR' && '€'}{link.currency === 'GBP' && '£'}{link.price}
+                </div>
+              )}
+              <div className="absolute top-3 left-3 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
+                🎥 PRODUCT PREVIEW
+              </div>
+            </div>
+          ) : (
+            <div className="relative">
+              <img
+                src={link.thumbnailUrl || 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg'}
+                alt={link.title}
+                className="w-full h-48 object-cover"
+              />
+              {link.price && (
+                <div className="absolute top-3 right-3 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                  {link.currency === 'USD' && '$'}{link.currency === 'EUR' && '€'}{link.currency === 'GBP' && '£'}{link.price}
+                </div>
+              )}
+            </div>
+          )}
           <div className="p-4">
             <h3 className="font-medium text-white mb-2">{link.title}</h3>
             {link.description && (

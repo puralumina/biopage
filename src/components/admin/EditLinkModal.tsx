@@ -159,6 +159,35 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm resize-none"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Thumbnail Type</label>
+                  <select
+                    value={editedLink.thumbnailType || 'image'}
+                    onChange={(e) => handleInputChange('thumbnailType', e.target.value as 'image' | 'video')}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="image">Image</option>
+                    <option value="video">Video Embed</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {editedLink.thumbnailType === 'video' ? 'Video URL (YouTube, Vimeo, etc.)' : 'Thumbnail Image URL'}
+                  </label>
+                  <input
+                    type="url"
+                    value={editedLink.thumbnailUrl || ''}
+                    onChange={(e) => handleInputChange('thumbnailUrl', e.target.value)}
+                    placeholder={editedLink.thumbnailType === 'video' ? 'https://youtube.com/watch?v=...' : 'https://example.com/image.jpg'}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    {editedLink.thumbnailType === 'video' 
+                      ? 'Supports YouTube, Vimeo, TikTok and other video platforms'
+                      : 'URL to the product image'
+                    }
+                  </p>
+                </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>

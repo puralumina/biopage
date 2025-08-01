@@ -83,8 +83,13 @@ const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
                     className="w-full backdrop-blur-sm border p-3 rounded-lg flex items-center space-x-3"
                     style={getBlockStyle(link)}
                   >
-                    {link.thumbnailUrl && (
+                    {link.thumbnailUrl && link.thumbnailType !== 'video' && (
                       <img src={link.thumbnailUrl} alt={link.title} className="w-8 h-8 rounded-md object-cover flex-shrink-0" />
+                    )}
+                    {link.thumbnailType === 'video' && (
+                      <div className="w-8 h-8 rounded-md bg-blue-600 flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-xs">🎥</span>
+                      </div>
                     )}
                     {link.type === 'textSection' && (
                       <p className="text-xs text-white/70 text-left">Text Section</p>
