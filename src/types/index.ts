@@ -73,6 +73,11 @@ export interface Link {
   price?: string;
   currency?: string;
   channelId?: string;
+  styling?: {
+    backgroundColor?: string;
+    borderColor?: string;
+    opacity?: number;
+  };
 }
 
 export interface PageData {
