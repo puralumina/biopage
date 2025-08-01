@@ -505,10 +505,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'textSection':
       return (
-        <div 
-          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg p-6"
-          style={getBlockStyle(link)}
-        >
+        <div className="w-full max-w-2xl">
           <div className="space-y-4">
             {(link.textContent || []).map((textItem, index) => {
               const textStyles: React.CSSProperties = {
