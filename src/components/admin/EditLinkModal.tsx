@@ -434,6 +434,38 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                   >
                     + Add Text Element
                   </button>
+                  
+                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Top Spacing: {editedLink.topSpacing || 0}px
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="5"
+                        value={editedLink.topSpacing || 0}
+                        onChange={(e) => handleInputChange('topSpacing', parseInt(e.target.value))}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Bottom Spacing: {editedLink.bottomSpacing || 0}px
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="5"
+                        value={editedLink.bottomSpacing || 0}
+                        onChange={(e) => handleInputChange('bottomSpacing', parseInt(e.target.value))}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

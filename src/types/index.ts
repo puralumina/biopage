@@ -98,6 +98,8 @@ export interface Link {
       textDecoration?: 'none' | 'underline';
     };
   }[];
+  topSpacing?: number;
+  bottomSpacing?: number;
 }
 
 export interface Product {
