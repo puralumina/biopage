@@ -259,7 +259,14 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'product':
       return (
-        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+        <div 
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+          style={{
+            backgroundColor: blockStyle.backgroundColor,
+            borderColor: blockStyle.borderColor,
+            opacity: blockStyle.opacity
+          }}
+        >
           <div className="relative">
             <img
               src={link.thumbnailUrl || 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg'}

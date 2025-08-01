@@ -101,6 +101,11 @@ const defaultPageData: PageData = {
       url: 'https://gallery.sophiacarter.com',
       order: 6,
       active: true,
+      styling: {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderColor: 'rgba(255, 255, 255, 0.2)',
+        opacity: 1
+      }
     }
   ],
   analytics: {

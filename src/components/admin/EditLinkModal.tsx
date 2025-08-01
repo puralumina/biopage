@@ -279,6 +279,85 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
             </div>
           </div>
 
+          <div className="border-t pt-4 mt-4">
+            <h4 className="text-sm font-medium text-gray-900 mb-3">Block Styling</h4>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    value={editedLink.styling?.backgroundColor || '#ffffff'} 
+                    onChange={(e) => handleInputChange('styling', { 
+                      ...editedLink.styling, 
+                      backgroundColor: e.target.value 
+                    })} 
+                    className="w-12 h-10 rounded border border-gray-300" 
+                  />
+                  <input 
+                    type="text" 
+                    value={editedLink.styling?.backgroundColor || '#ffffff'} 
+                    onChange={(e) => handleInputChange('styling', { 
+                      ...editedLink.styling, 
+                      backgroundColor: e.target.value 
+                    })} 
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm font-mono" 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Border Color</label>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    value={editedLink.styling?.borderColor || '#e5e7eb'} 
+                    onChange={(e) => handleInputChange('styling', { 
+                      ...editedLink.styling, 
+                      borderColor: e.target.value 
+                    })} 
+                    className="w-12 h-10 rounded border border-gray-300" 
+                  />
+                  <input 
+                    type="text" 
+                    value={editedLink.styling?.borderColor || '#e5e7eb'} 
+                    onChange={(e) => handleInputChange('styling', { 
+                      ...editedLink.styling, 
+                      borderColor: e.target.value 
+                    })} 
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm font-mono" 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Opacity: {Math.round((editedLink.styling?.opacity || 1) * 100)}%
+                </label>
+                <input
+                  type="range"
+                  min="0.1"
+                  max="1"
+                  step="0.1"
+                  value={editedLink.styling?.opacity || 1}
+                  onChange={(e) => handleInputChange('styling', { 
+                    ...editedLink.styling, 
+                    opacity: parseFloat(e.target.value) 
+                  })}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleInputChange('styling', undefined)}
+                className="text-sm text-gray-500 hover:text-gray-700"
+              >
+                Reset to Default Styling
+              </button>
+            </div>
+          </div>
+
           <div className="mt-6 flex justify-end space-x-2">
             <button 
               onClick={onClose} 

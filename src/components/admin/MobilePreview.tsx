@@ -70,7 +70,10 @@ const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
             <div className="space-y-3">
               {visibleLinks.map((link) => (
                 <div key={link.id} className="transform scale-90 origin-top">
-                  <div className="w-full bg-white/10 backdrop-blur-sm border border-white/20 p-3 rounded-lg flex items-center space-x-3">
+                  <div 
+                    className="w-full backdrop-blur-sm border p-3 rounded-lg flex items-center space-x-3"
+                    style={getBlockStyle(link)}
+                  >
                     {link.thumbnailUrl && (
                       <img src={link.thumbnailUrl} alt={link.title} className="w-8 h-8 rounded-md object-cover flex-shrink-0" />
                     )}
