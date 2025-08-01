@@ -1,12 +1,21 @@
 import React from 'react';
 import { MapPin, ExternalLink } from 'lucide-react';
-import { PageData } from '../../types';
+import { PageData, Link } from '../../types';
 
 interface MobilePreviewProps {
   data: PageData;
 }
 
 const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
+  const getBlockStyle = (link: Link): React.CSSProperties => {
+    const styling = link.styling || {};
+    return {
+      backgroundColor: styling.backgroundColor || 'rgba(255, 255, 255, 0.1)',
+      borderColor: styling.borderColor || 'rgba(255, 255, 255, 0.2)',
+      opacity: styling.opacity !== undefined ? styling.opacity / 100 : 1,
+    };
+  };
+
   const getBackgroundStyle = () => {
     if (data.media.wallpaperUrl) {
       return { backgroundImage: `url(${data.media.wallpaperUrl})` };
