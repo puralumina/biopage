@@ -151,7 +151,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
             {editedLink.type === 'product' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Product Description</label>
+                      value={editedLink.styling?.borderColor?.includes('rgba') ? '#ffffff' : (editedLink.styling?.borderColor || '#ffffff')} 
                   <textarea
                     value={editedLink.description || ''}
                     onChange={(e) => handleInputChange('description', e.target.value)}
@@ -165,14 +165,18 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                     value={editedLink.thumbnailType || 'image'}
                     onChange={(e) => handleInputChange('thumbnailType', e.target.value as 'image' | 'video')}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      placeholder="e.g. #ffffff or rgba(255,255,255,0.2)"
                   >
                     <option value="image">Image</option>
                     <option value="video">Video Embed</option>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Use hex colors (#ffffff) or rgba values (rgba(255,255,255,0.2))
+                  </p>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {editedLink.thumbnailType === 'video' ? 'Video URL (YouTube, Vimeo, etc.)' : 'Thumbnail Image URL'}
+                    Block Opacity: {editedLink.styling?.opacity || 100}%
                   </label>
                   <input
                     type="url"
@@ -186,8 +190,28 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                       ? 'Supports YouTube, Vimeo, TikTok and other video platforms'
                       : 'URL to the product image'
                     }
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>10%</span>
+                    <span>50%</span>
+                    <span>100%</span>
+                  </div>
                   </p>
                 </div>
+                <div className="bg-gray-50 p-3 rounded-md">
+                  <h5 className="text-sm font-medium text-gray-700 mb-2">Preview</h5>
+                  <div 
+                    className="w-full h-12 rounded border flex items-center justify-center text-sm"
+                    style={{
+                      backgroundColor: editedLink.styling?.backgroundColor || 'rgba(255, 255, 255, 0.1)',
+                      borderColor: editedLink.styling?.borderColor || 'rgba(255, 255, 255, 0.2)',
+                      opacity: editedLink.styling?.opacity !== undefined ? editedLink.styling.opacity / 100 : 1,
+                      color: '#333'
+                    }}
+                  >
+                    Style Preview
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
@@ -580,7 +604,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                       value={editedLink.schedule.start}
                       onChange={(e) => handleInputChange('schedule', { 
                         ...editedLink.schedule!, 
-                        start: e.target.value 
+                      value={editedLink.styling?.backgroundColor?.includes('rgba') ? '#ffffff' : (editedLink.styling?.backgroundColor || '#ffffff')} 
                       })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
@@ -594,9 +618,13 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                         ...editedLink.schedule!, 
                         end: e.target.value 
                       })}
+                      placeholder="e.g. #ffffff or rgba(255,255,255,0.1)"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                   </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Use hex colors (#ffffff) or rgba values (rgba(255,255,255,0.1))
+                  </p>
                 </div>
               )}
             </div>

@@ -114,9 +114,11 @@ const handleDeepLink = (url: string, openInNewWindow: boolean = true) => {
     
     if (deepLinkUrl !== url) {
       // Try to open the app first
-      const appLink = document.createElement('a');
-      appLink.href = deepLinkUrl;
-      appLink.click();
+      try {
+        window.location.href = deepLinkUrl;
+      } catch (e) {
+        console.log('App not available, opening web version');
+      }
       
       // Fallback to web URL after a short delay if app doesn't open
       setTimeout(() => {
@@ -125,7 +127,7 @@ const handleDeepLink = (url: string, openInNewWindow: boolean = true) => {
         } else {
           window.location.href = url;
         }
-      }, 1000);
+      }, 2500);
       
       return;
     }
