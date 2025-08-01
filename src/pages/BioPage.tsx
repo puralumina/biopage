@@ -1,4 +1,9 @@
+import React, { useState, useEffect } from 'react';
             import { Lock, MapPin, Play, ShoppingCart, ExternalLink, Music } from 'lucide-react';
+import { LinkType, PageData } from '../types';
+import { getPageData, trackLinkClick, trackPageView } from '../services/pageService';
+import PixelInjector from '../components/PixelInjector';
+import ProductCarousel from '../components/ProductCarousel';
 
 const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }> = ({ link, onClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
