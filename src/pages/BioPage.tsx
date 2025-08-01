@@ -7,6 +7,31 @@ import { Lock, MapPin, Play, ShoppingCart, ExternalLink } from 'lucide-react';
 const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }> = ({ link, onClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const getEmbedUrl = (url: string) => {
+    // YouTube URL conversion
+    if (url.includes('youtube.com/watch?v=')) {
+      const videoId = url.split('v=')[1]?.split('&')[0];
+      return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+    }
+    if (url.includes('youtu.be/')) {
+      const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+      return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+    }
+    
+    // Vimeo URL conversion
+    if (url.includes('vimeo.com/')) {
+      const videoId = url.split('vimeo.com/')[1]?.split('?')[0];
+      return `https://player.vimeo.com/video/${videoId}`;
+    }
+    
+    // TikTok URL conversion
+    if (url.includes('tiktok.com/')) {
+      return url.replace('/video/', '/embed/');
+    }
+    
+    // If already an embed URL or other platform, return as is
+    return url;
+  };
   const handleProtectedClick = (e: React.MouseEvent) => {
     if (link.password) {
       e.preventDefault();
@@ -57,14 +82,15 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
     case 'videoEmbed':
       return (
         <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
-          <div className="aspect-video">
+          <div className="aspect-video bg-black">
             <iframe
-              src={link.url}
+              src={getEmbedUrl(link.url)}
               title={link.title}
-              className="w-full h-full rounded-lg"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              className="w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
               onLoad={() => onClick(link.id)}
+              loading="lazy"
             />
           </div>
           <div className="p-3">
