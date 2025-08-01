@@ -1,14 +1,12 @@
-// src/pages/BioPage.tsx
 import React, { useEffect, useState } from 'react';
 import { getPageData, trackPageView, trackLinkClick } from '../services/pageService';
-import { PageData, Link as LinkType } from '../types/pageTypes';
+import { PageData, Link as LinkType } from '../types';
 import PixelInjector from '../components/PixelInjector';
-import { Lock } from 'lucide-react';
-
-// --- You would create separate components for each block type for cleaner code ---
-// --- For simplicity, we'll define a generic block renderer here ---
+import { Lock, MapPin } from 'lucide-react';
 
 const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }> = ({ link, onClick }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const handleProtectedClick = (e: React.MouseEvent) => {
     if (link.password) {
       e.preventDefault();
@@ -24,28 +22,166 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
     }
   };
 
-  // Here you would have a switch(link.type) to render different block styles
-  // For now, we'll render a 'standard' link style for all types.
-  return (
-    <a
-      href={link.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={handleProtectedClick}
-      className="group w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
-      style={{ color: 'inherit' }} // Inherit color from theme
-    >
-      {link.thumbnailUrl && link.type === 'standard' && (
-        <img src={link.thumbnailUrl} alt={link.title} className="w-12 h-12 rounded-md object-cover" />
-      )}
-      <div className="flex-grow text-center">
-        <p className="font-semibold">{link.title}</p>
-      </div>
-      {link.password && <Lock size={16} className="text-white/50" />}
-    </a>
-  );
-};
+  const nextImage = () => {
+    if (link.images) {
+      setCurrentImageIndex((prev) => (prev + 1) % link.images!.length);
+    }
+  };
 
+  const prevImage = () => {
+    if (link.images) {
+      setCurrentImageIndex((prev) => (prev - 1 + link.images!.length) % link.images!.length);
+    }
+  };
+
+  switch (link.type) {
+    case 'standard':
+      return (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={handleProtectedClick}
+          className="group w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
+        >
+          {link.thumbnailUrl && (
+            <img src={link.thumbnailUrl} alt={link.title} className="w-12 h-12 rounded-md object-cover" />
+          )}
+          <div className="flex-grow text-center">
+            <p className="font-semibold text-white">{link.title}</p>
+          </div>
+          {link.password && <Lock size={16} className="text-white/50" />}
+        </a>
+      );
+
+    case 'videoEmbed':
+      return (
+        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+          <div className="relative">
+            <img
+              src={link.thumbnailUrl}
+              alt={link.title}
+              className="w-full h-48 object-cover"
+            />
+            <button
+              onClick={() => {
+                onClick(link.id);
+                window.open(link.url, '_blank');
+              }}
+              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-20 transition-all duration-200"
+            >
+              <div className="bg-white rounded-full p-3 hover:scale-110 transition-transform">
+                <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                  <div className="w-0 h-0 border-l-4 border-l-white border-t-2 border-t-transparent border-b-2 border-b-transparent ml-1"></div>
+                </div>
+              </div>
+            </button>
+            <div className="absolute bottom-3 left-3 text-white font-medium text-sm bg-black bg-opacity-50 px-2 py-1 rounded">
+              {link.title}
+            </div>
+          </div>
+        </div>
+      );
+
+    case 'musicEmbed':
+      return (
+        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-lg">
+          <div className="flex items-center gap-3">
+            <img
+              src={link.thumbnailUrl}
+              alt={link.title}
+              className="w-16 h-16 rounded-lg object-cover"
+            />
+            <div className="flex-1">
+              <h3 className="font-medium text-white">{link.title}</h3>
+              <p className="text-sm text-white/70">{link.artist}</p>
+            </div>
+            <button
+              onClick={() => {
+                onClick(link.id);
+                window.open(link.url, '_blank');
+              }}
+              className="bg-blue-600 rounded-full p-3 hover:bg-blue-700 transition-colors"
+            >
+              <div className="w-5 h-5 text-white flex items-center justify-center">
+                <div className="w-0 h-0 border-l-4 border-l-white border-t-2 border-t-transparent border-b-2 border-b-transparent ml-1"></div>
+              </div>
+            </button>
+          </div>
+        </div>
+      );
+
+    case 'imageBanner':
+      return (
+        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+          <img
+            src={link.thumbnailUrl}
+            alt={link.title}
+            className="w-full h-48 object-cover"
+          />
+          <div className="p-4">
+            <h3 className="font-medium text-white mb-1">{link.title}</h3>
+            {link.description && (
+              <p className="text-sm text-white/70">{link.description}</p>
+            )}
+          </div>
+        </div>
+      );
+
+    case 'photoCarousel':
+      return (
+        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+          <div className="relative">
+            {link.images && link.images.length > 0 && (
+              <>
+                <img
+                  src={link.images[currentImageIndex]}
+                  alt={`${link.title} - ${currentImageIndex + 1}`}
+                  className="w-full h-48 object-cover"
+                />
+                {link.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all"
+                    >
+                      <div className="w-4 h-4 flex items-center justify-center">
+                        <div className="w-0 h-0 border-r-4 border-r-white border-t-2 border-t-transparent border-b-2 border-b-transparent"></div>
+                      </div>
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all"
+                    >
+                      <div className="w-4 h-4 flex items-center justify-center">
+                        <div className="w-0 h-0 border-l-4 border-l-white border-t-2 border-t-transparent border-b-2 border-b-transparent"></div>
+                      </div>
+                    </button>
+                    <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1">
+                      {link.images.map((_, index) => (
+                        <div
+                          key={index}
+                          className={`w-2 h-2 rounded-full ${
+                            index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+          <div className="p-4">
+            <h3 className="font-medium text-white">{link.title}</h3>
+          </div>
+        </div>
+      );
+
+    default:
+      return null;
+  }
+};
 
 const BioPage: React.FC = () => {
   const [pageData, setPageData] = useState<PageData | null>(null);
@@ -57,7 +193,6 @@ const BioPage: React.FC = () => {
       try {
         const data = await getPageData();
         setPageData(data);
-        // Track a page view once data is successfully loaded
         trackPageView();
       } catch (err) {
         console.error(err);
@@ -85,7 +220,6 @@ const BioPage: React.FC = () => {
     );
   }
 
-  // Filter links based on active status and schedule
   const visibleLinks = pageData.links.filter(link => {
     if (!link.active) return false;
     if (link.schedule) {
@@ -103,7 +237,6 @@ const BioPage: React.FC = () => {
     backgroundColor: theme.backgroundColor,
     color: theme.primaryColor,
     fontFamily: theme.font,
-    '--wallpaper-image': `url(${media.wallpaperUrl})`,
   } as React.CSSProperties;
 
   return (
@@ -113,22 +246,43 @@ const BioPage: React.FC = () => {
         style={pageStyle} 
         className="min-h-screen w-full flex flex-col items-center justify-start p-4 transition-colors duration-500 relative"
       >
-        {/* Wallpaper */}
-        {media.wallpaperUrl && <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: `url(${media.wallpaperUrl})` }}></div>}
-        {media.videoUrl && <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0"><source src={media.videoUrl} type="video/mp4" /></video>}
-        <div className="absolute inset-0 bg-black/30 z-0"></div> {/* Overlay for readability */}
+        {media.wallpaperUrl && (
+          <div 
+            className="absolute inset-0 bg-cover bg-center z-0" 
+            style={{ backgroundImage: `url(${media.wallpaperUrl})` }}
+          />
+        )}
+        {media.videoUrl && (
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="absolute inset-0 w-full h-full object-cover z-0"
+          >
+            <source src={media.videoUrl} type="video/mp4" />
+          </video>
+        )}
+        <div className="absolute inset-0 bg-black/30 z-0" />
         
         <div className="relative z-10 w-full flex flex-col items-center pt-16">
-          {/* Profile Section */}
           <header className="text-center flex flex-col items-center mb-10">
-            <img src={profile.imageUrl} alt={profile.name} className="w-28 h-28 rounded-full object-cover mb-4 border-4 border-white/50 shadow-lg" />
-            <h1 className="text-3xl font-bold">{profile.name}</h1>
-            <p className="text-lg opacity-90 mt-1">{profile.subtitle}</p>
-            <p className="text-sm opacity-80 mt-2">{profile.location}</p>
-            <p className="max-w-md mt-4 text-base opacity-90">{profile.bio}</p>
+            <img 
+              src={profile.imageUrl} 
+              alt={profile.name} 
+              className="w-28 h-28 rounded-full object-cover mb-4 border-4 border-white/50 shadow-lg" 
+            />
+            <h1 className="text-3xl font-bold text-white">{profile.name}</h1>
+            <p className="text-lg text-blue-200 mt-1">{profile.subtitle}</p>
+            {profile.location && (
+              <div className="flex items-center gap-1 text-white/80 mt-2">
+                <MapPin className="w-4 h-4" />
+                <p className="text-sm">{profile.location}</p>
+              </div>
+            )}
+            <p className="max-w-md mt-4 text-base text-white/90">{profile.bio}</p>
           </header>
 
-          {/* Links Section */}
           <div className="w-full flex flex-col items-center space-y-4">
             {visibleLinks.map(link => (
               <LinkBlock key={link.id} link={link} onClick={trackLinkClick} />

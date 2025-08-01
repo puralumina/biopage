@@ -1,26 +1,18 @@
-// src/pages/AdminDashboard.tsx
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { PageData } from '../types/pageTypes';
+import { PageData } from '../types';
 import { getPageData, savePageData } from '../services/pageService';
 import { useNavigate } from 'react-router-dom';
-
-// Import your components (assuming you have these)
 import Header from '../components/admin/Header';
 import ControlPanel from '../components/admin/ControlPanel';
 import MobilePreview from '../components/admin/MobilePreview';
-import LoadingSpinner from '../components/admin/LoadingSpinner'; // A simple spinner component
 
 const AdminDashboard: React.FC = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  // State for the data being edited (the "draft")
   const [draftData, setDraftData] = useState<PageData | null>(null);
-  // State to hold the original data for checking for unsaved changes
   const [liveData, setLiveData] = useState<PageData | null>(null);
-
-  // State for UI feedback
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,14 +20,13 @@ const AdminDashboard: React.FC = () => {
 
   const hasUnsavedChanges = JSON.stringify(draftData) !== JSON.stringify(liveData);
 
-  // Fetch initial data on component mount
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
       try {
         const data = await getPageData();
         setDraftData(data);
-        setLiveData(data); // Set the initial "saved" state
+        setLiveData(data);
       } catch (err) {
         setError('Failed to load page data. Please try refreshing.');
         console.error(err);
@@ -46,12 +37,11 @@ const AdminDashboard: React.FC = () => {
     loadData();
   }, []);
 
-  // Handle unsaved changes warning
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges) {
         e.preventDefault();
-        e.returnValue = ''; // Required for modern browsers
+        e.returnValue = '';
       }
     };
 
@@ -61,7 +51,6 @@ const AdminDashboard: React.FC = () => {
     };
   }, [hasUnsavedChanges]);
 
-
   const handleSaveChanges = async () => {
     if (!draftData) return;
     setIsSaving(true);
@@ -69,9 +58,9 @@ const AdminDashboard: React.FC = () => {
 
     try {
       await savePageData(draftData);
-      setLiveData(draftData); // Update the "live" state to match the new draft
+      setLiveData(draftData);
       setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 2000); // Hide after 2s
+      setTimeout(() => setShowSuccess(false), 2000);
     } catch (err) {
       setError('Failed to save changes. Please try again.');
       console.error(err);
@@ -81,44 +70,56 @@ const AdminDashboard: React.FC = () => {
   };
 
   const handleLogout = async () => {
+    if (hasUnsavedChanges) {
+      const confirmed = window.confirm('You have unsaved changes. Are you sure you want to logout?');
+      if (!confirmed) return;
+    }
+    
     await logout();
     navigate('/admin/login');
   };
   
-  // Render loading state
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
   }
 
-  // Render error state
-  if (error || !draftData) {
-    return <div className="min-h-screen flex items-center justify-center text-red-500">{error || 'Could not load data.'}</div>;
+  if (error && !draftData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    );
   }
 
-  // Render the main dashboard
+  if (!draftData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-gray-500">No data available</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* The main header */}
       <Header
+        hasUnsavedChanges={hasUnsavedChanges}
         onSave={handleSaveChanges}
         onLogout={handleLogout}
-        isSaving={isSaving}
-        hasUnsavedChanges={hasUnsavedChanges}
+        saving={isSaving}
         showSuccess={showSuccess}
+        error={error}
       />
 
-      {/* Main content grid */}
       <main className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-4 md:p-8 max-w-screen-2xl mx-auto">
-        {/* Left Column: Controls */}
         <div className="lg:col-span-2">
-          {/* We will pass draftData and setDraftData to the control panel */}
-          {/* <ControlPanel data={draftData} setData={setDraftData} /> */}
           <ControlPanel data={draftData} setData={setDraftData} />
         </div>
 
-        {/* Right Column: Preview */}
         <div className="hidden lg:block lg:col-span-1">
-           {/* The preview ONLY needs the draftData to display it */}
           <MobilePreview data={draftData} />
         </div>
       </main>

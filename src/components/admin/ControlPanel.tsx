@@ -1,10 +1,9 @@
-// src/components/admin/ControlPanel.tsx
 import React, { useState } from 'react';
-import { PageData } from '../../types/pageTypes';
+import { PageData } from '../../types';
 import SettingsTab from './SettingsTab';
-import { Settings, Link, BarChart3 } from 'lucide-react';
 import LinksTab from './LinksTab';
 import AnalyticsTab from './AnalyticsTab';
+import { Settings, Link, BarChart3 } from 'lucide-react';
 
 interface ControlPanelProps {
   data: PageData;
@@ -16,16 +15,13 @@ type Tab = 'settings' | 'links' | 'analytics';
 const ControlPanel: React.FC<ControlPanelProps> = ({ data, setData }) => {
   const [activeTab, setActiveTab] = useState<Tab>('settings');
 
-  // In src/components/admin/ControlPanel.tsx
-
-const renderTabContent = () => {
+  const renderTabContent = () => {
     switch (activeTab) {
       case 'settings':
         return <SettingsTab data={data} setData={setData} />;
       case 'links':
         return <LinksTab data={data} setData={setData} />; 
       case 'analytics':
-        // The placeholder is now replaced with the actual component
         return <AnalyticsTab data={data} />;
       default:
         return null;
@@ -49,7 +45,7 @@ const renderTabContent = () => {
   return (
     <div>
       <div className="flex space-x-2 mb-6">
-        <TabButton tabName="settings" icon={<Settings size={16} />} label="Settings" />
+        <TabButton tabName="settings" icon={<Settings size={16} />} label="Page Branding" />
         <TabButton tabName="links" icon={<Link size={16} />} label="Links & Content" />
         <TabButton tabName="analytics" icon={<BarChart3 size={16} />} label="Analytics" />
       </div>

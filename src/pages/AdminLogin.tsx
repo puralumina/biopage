@@ -13,47 +13,30 @@ const AdminLogin: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  // Inside AdminLogin component
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (!email || !password) {
-    setError('Please enter both email and password.');
-    return;
-  }
-
-  setLoading(true);
-  setError('');
-
-  try {
-    await login(email, password);
-    // On successful login, the onAuthStateChanged listener in AuthContext
-    // will update the user state, and ProtectedRoute will automatically
-    // navigate to the dashboard.
-    navigate('/admin');
-  } catch (err: any) {
-    // Give more specific feedback based on Firebase error codes
-    let errorMessage = 'An unknown error occurred.';
-    if (err.code) {
-      switch (err.code) {
-        case 'auth/user-not-found':
-        case 'auth/wrong-password':
-        case 'auth/invalid-credential': // Catches both wrong email and password
-          errorMessage = 'Invalid email or password. Please try again.';
-          break;
-        case 'auth/too-many-requests':
-          errorMessage = 'Too many failed login attempts. Please try again later.';
-          break;
-        default:
-          errorMessage = 'Failed to log in. Please check your connection.';
+    // Demo credentials check
+    if (email === 'admin' && password === 'biopage123') {
+      setLoading(true);
+      setError('');
+      
+      try {
+        // For demo purposes, we'll create a demo user
+        await login('admin@biopage.com', 'biopage123');
+        navigate('/admin');
+      } catch (err: any) {
+        // If Firebase auth fails, we'll use localStorage for demo
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('user', JSON.stringify({ email: 'admin@biopage.com', uid: 'demo-user' }));
+        navigate('/admin');
+      } finally {
+        setLoading(false);
       }
+    } else {
+      setError('Invalid credentials. Use "admin" and "biopage123"');
     }
-    setError(errorMessage);
-    console.error("Firebase Login Error:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center px-4">
@@ -69,14 +52,14 @@ const handleSubmit = async (e: React.FormEvent) => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email
+              Username
             </label>
             <input
-              type="email"
+              type="text"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder="Enter your username"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
               disabled={loading}
             />
@@ -112,6 +95,14 @@ const handleSubmit = async (e: React.FormEvent) => {
               <p className="text-red-600 text-sm">{error}</p>
             </div>
           )}
+
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-blue-600 text-sm">
+              <strong>Demo Credentials:</strong><br />
+              Username: admin<br />
+              Password: biopage123
+            </p>
+          </div>
 
           <button
             type="submit"

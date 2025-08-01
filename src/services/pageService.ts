@@ -1,41 +1,129 @@
-// src/services/pageService.ts
 import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 import { db } from '../firebase';
-import { PageData } from '../types/pageTypes';
-import { defaultPageData } from './defaultData'; // We'll create this file next
+import { PageData } from '../types';
 
-// Define the path to our single document
 const pageDocRef = doc(db, 'pages', 'main');
 
-/**
- * Fetches the entire page data object from Firestore.
- * If the document doesn't exist, it returns the default data.
- */
+const defaultPageData: PageData = {
+  profile: {
+    name: 'Wise FOSSI',
+    subtitle: 'Pro BMX Athlete | Content Creator',
+    location: 'Douala, Cameroon',
+    bio: 'I create captivating visuals and user experiences. Let\'s collaborate!',
+    imageUrl: 'https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-1/526285757_122248344026224158_2650356844423284755_n.jpg',
+  },
+  theme: {
+    preset: 'Default Light',
+    backgroundColor: '#F8FAFC',
+    primaryColor: '#3B82F6',
+    font: 'Inter, sans-serif',
+  },
+  media: {
+    wallpaperUrl: '',
+    videoUrl: '',
+    faviconUrl: '',
+  },
+  pixels: {
+    metaPixel: '',
+    googleTag: '',
+    tiktokPixel: '',
+    snapchatPixel: '',
+    pinterestTag: '',
+    customHeaderScripts: '',
+  },
+  links: [
+    {
+      id: '1',
+      type: 'standard',
+      title: 'Official Website',
+      url: 'https://wisefossi.com',
+      order: 0,
+      active: true,
+    },
+    {
+      id: '2',
+      type: 'standard',
+      title: 'Official Facebook Page',
+      url: 'https://facebook.com/fossiwise',
+      order: 1,
+      active: true,
+    },
+    {
+      id: '3',
+      type: 'standard',
+      title: 'Behance',
+      url: 'https://behance.net/sophiacarter',
+      order: 2,
+      active: true,
+    },
+    {
+      id: '4',
+      type: 'videoEmbed',
+      title: 'Latest Project Video',
+      url: 'https://vimeo.com/example',
+      thumbnailUrl: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg',
+      order: 3,
+      active: true,
+    },
+    {
+      id: '5',
+      type: 'musicEmbed',
+      title: 'Midnight Dreams',
+      artist: 'Alex Bennett',
+      platform: 'Spotify',
+      thumbnailUrl: 'https://images.pexels.com/photos/167636/pexels-photo-167636.jpeg',
+      url: 'https://open.spotify.com/track/example',
+      order: 4,
+      active: true,
+    },
+    {
+      id: '6',
+      type: 'imageBanner',
+      title: 'Project Showcase',
+      description: 'A collection of my latest design work',
+      thumbnailUrl: 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg',
+      url: 'https://portfolio.sophiacarter.com',
+      order: 5,
+      active: true,
+    },
+    {
+      id: '7',
+      type: 'photoCarousel',
+      title: 'Art Collection',
+      images: [
+        'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg',
+        'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg',
+        'https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg'
+      ],
+      url: 'https://gallery.sophiacarter.com',
+      order: 6,
+      active: true,
+    }
+  ],
+  analytics: {
+    pageViews: 0,
+    uniqueVisitors: 0,
+    totalClicks: 0,
+    linkClicks: {},
+  },
+};
+
 export const getPageData = async (): Promise<PageData> => {
   try {
     const docSnap = await getDoc(pageDocRef);
     if (docSnap.exists()) {
-      // Return the existing data, cast to our PageData type
       return docSnap.data() as PageData;
     } else {
-      // Document doesn't exist, maybe it's the first run.
-      // Let's create it with default data and return that.
       console.log("No such document! Initializing with default data.");
       await setDoc(pageDocRef, defaultPageData);
       return defaultPageData;
     }
   } catch (error) {
     console.error("Error getting page data:", error);
-    // Return default data as a fallback in case of an error
     return defaultPageData;
   }
 };
 
-/**
- * Saves the entire page data object to Firestore.
- * This is used by the admin dashboard's "Save Changes" button.
- * @param data The complete PageData object to save.
- */
 export const savePageData = async (data: PageData): Promise<void> => {
   try {
     await setDoc(pageDocRef, data);
@@ -45,34 +133,23 @@ export const savePageData = async (data: PageData): Promise<void> => {
   }
 };
 
-/**
- * Atomically increments the click count for a specific link and the total clicks.
- * This is safe to call from many clients at once.
- * @param linkId The ID of the link that was clicked.
- */
 export const trackLinkClick = async (linkId: string): Promise<void> => {
-    try {
-        await updateDoc(pageDocRef, {
-            [`analytics.linkClicks.${linkId}`]: increment(1),
-            'analytics.totalClicks': increment(1)
-        });
-    } catch (error) {
-        // It's okay if this fails silently on the client side
-        console.warn("Could not track link click:", error);
-    }
-}
+  try {
+    await updateDoc(pageDocRef, {
+      [`analytics.linkClicks.${linkId}`]: increment(1),
+      'analytics.totalClicks': increment(1)
+    });
+  } catch (error) {
+    console.warn("Could not track link click:", error);
+  }
+};
 
-/**
- * Atomically increments the page view count.
- */
 export const trackPageView = async (): Promise<void> => {
-    try {
-        await updateDoc(pageDocRef, {
-            'analytics.pageViews': increment(1)
-        });
-    } catch (error) {
-        console.warn("Could not track page view:", error);
-    }
-}
-
-// We can add unique visitor tracking later if needed, as it's more complex.
+  try {
+    await updateDoc(pageDocRef, {
+      'analytics.pageViews': increment(1)
+    });
+  } catch (error) {
+    console.warn("Could not track page view:", error);
+  }
+};

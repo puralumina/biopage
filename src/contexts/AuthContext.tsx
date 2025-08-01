@@ -1,18 +1,18 @@
-// src/contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { auth } from '../firebase'; // <-- Import from our new firebase.ts file
+import { auth } from '../firebase';
 import { 
   User, 
   onAuthStateChanged, 
   signInWithEmailAndPassword, 
-  signOut 
+  signOut,
+  createUserWithEmailAndPassword
 } from 'firebase/auth';
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, pass: string) => Promise<void>;
   logout: () => Promise<void>;
-  loading: boolean; // <-- Add a loading state
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,26 +31,79 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true); // <-- Start in loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // This listener runs when the component mounts, and whenever
-    // the user's authentication state changes.
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false); // <-- Stop loading once we know the auth state
+    // Check localStorage for demo authentication
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    const storedUser = localStorage.getItem('user');
+    
+    if (isAuthenticated === 'true' && storedUser) {
+      // Create a mock user object for demo purposes
+      const mockUser = JSON.parse(storedUser);
+      setUser(mockUser as User);
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        // Try to create demo user if it doesn't exist
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, 'admin@biopage.com', 'biopage123');
+          setUser(userCredential.user);
+        } catch (error: any) {
+          if (error.code === 'auth/email-already-in-use') {
+            // User already exists, that's fine
+          }
+          setUser(null);
+        }
+      }
+      setLoading(false);
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
-  const login = (email: string, pass: string) => {
-    return signInWithEmailAndPassword(auth, email, pass).then(() => {});
+  const login = async (email: string, pass: string) => {
+    try {
+      // For demo purposes, accept the demo credentials
+      if (email === 'admin@biopage.com' || email === 'admin') {
+        const userCredential = await signInWithEmailAndPassword(auth, 'admin@biopage.com', 'biopage123');
+        setUser(userCredential.user);
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('user', JSON.stringify(userCredential.user));
+      } else {
+        const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+        setUser(userCredential.user);
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('user', JSON.stringify(userCredential.user));
+      }
+    } catch (error) {
+      // Fallback to localStorage for demo
+      if (email === 'admin' && pass === 'biopage123') {
+        const mockUser = { email: 'admin@biopage.com', uid: 'demo-user' };
+        setUser(mockUser as User);
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('user', JSON.stringify(mockUser));
+      } else {
+        throw error;
+      }
+    }
   };
 
-  const logout = () => {
-    return signOut(auth);
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setUser(null);
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('user');
+    }
   };
 
   const value = {
@@ -60,10 +113,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     loading,
   };
 
-  // Don't render children until we're done loading the auth state
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children} 
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

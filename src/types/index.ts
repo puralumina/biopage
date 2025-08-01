@@ -3,85 +3,82 @@ export interface User {
   email: string;
 }
 
-export interface BioData {
-  id: string;
+export interface Profile {
   name: string;
   subtitle: string;
   location: string;
   bio: string;
-  profileImage: string;
-  theme: Theme;
-  content: ContentBlock[];
-  settings: BioSettings;
-  createdAt: Date;
-  updatedAt: Date;
+  imageUrl: string;
 }
 
 export interface Theme {
-  name: string;
-  primaryColor: string;
+  preset: 'Default Light' | 'Midnight Dark' | 'Minimalist' | 'Custom';
   backgroundColor: string;
-  fontFamily: string;
-  wallpaperImage?: string;
-  videoWallpaper?: string;
-  favicon?: string;
+  primaryColor: string;
+  font: string;
 }
 
-export interface BioSettings {
-  marketingPixels: MarketingPixels;
-  isPublic: boolean;
-  customDomain?: string;
+export interface Media {
+  wallpaperUrl: string;
+  videoUrl: string;
+  faviconUrl: string;
 }
 
-export interface MarketingPixels {
-  metaPixel?: string;
-  googleAnalytics?: string;
-  tiktokPixel?: string;
-  snapchatPixel?: string;
-  pinterestTag?: string;
-  customHeaderScripts?: string;
+export interface Pixels {
+  metaPixel: string;
+  googleTag: string;
+  tiktokPixel: string;
+  snapchatPixel: string;
+  pinterestTag: string;
+  customHeaderScripts: string;
 }
-
-export interface ContentBlock {
-  id: string;
-  type: ContentBlockType;
-  title: string;
-  url?: string;
-  description?: string;
-  thumbnail?: string;
-  isActive: boolean;
-  isPasswordProtected: boolean;
-  password?: string;
-  isScheduled: boolean;
-  scheduleStart?: Date;
-  scheduleEnd?: Date;
-  order: number;
-  embedCode?: string;
-  images?: string[];
-  artist?: string;
-  platform?: string;
-}
-
-export type ContentBlockType = 
-  | 'link' 
-  | 'video' 
-  | 'music' 
-  | 'image' 
-  | 'carousel' 
-  | 'youtube' 
-  | 'twitch' 
-  | 'product';
 
 export interface Analytics {
-  totalPageViews: number;
+  pageViews: number;
   uniqueVisitors: number;
   totalClicks: number;
   linkClicks: { [linkId: string]: number };
-  dailyViews: { [date: string]: number };
-  lastUpdated: Date;
+}
+
+export type LinkType = 
+  | 'standard' 
+  | 'videoEmbed' 
+  | 'musicEmbed' 
+  | 'imageBanner' 
+  | 'photoCarousel'
+  | 'latestYouTube'
+  | 'liveTwitch'
+  | 'product';
+
+export interface Link {
+  id: string;
+  type: LinkType;
+  order: number;
+  active: boolean;
+  title: string;
+  url: string;
+  thumbnailUrl?: string;
+  password?: string;
+  schedule?: {
+    start: string;
+    end: string;
+  };
+  artist?: string;
+  platform?: string;
+  description?: string;
+  images?: string[];
+}
+
+export interface PageData {
+  profile: Profile;
+  theme: Theme;
+  media: Media;
+  pixels: Pixels;
+  links: Link[];
+  analytics: Analytics;
 }
 
 export interface DraftState {
-  bioData: BioData;
+  pageData: PageData;
   hasUnsavedChanges: boolean;
 }

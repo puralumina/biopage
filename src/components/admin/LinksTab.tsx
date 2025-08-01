@@ -1,9 +1,8 @@
-// src/components/admin/LinksTab.tsx
 import React, { useState } from 'react';
 import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { v4 as uuidv4 } from 'uuid';
-import { PageData, Link } from '../../types/pageTypes';
+import { PageData, Link } from '../../types';
 import LinkItem from './LinkItem';
 import EditLinkModal from './EditLinkModal';
 import { Plus } from 'lucide-react';
@@ -63,7 +62,6 @@ const LinksTab: React.FC<LinksTabProps> = ({ data, setData }) => {
         const oldIndex = prev.links.findIndex(l => l.id === active.id);
         const newIndex = prev.links.findIndex(l => l.id === over.id);
         const reorderedLinks = arrayMove(prev.links, oldIndex, newIndex);
-        // Update order property for persistence
         const finalLinks = reorderedLinks.map((link, index) => ({ ...link, order: index }));
         return { ...prev, links: finalLinks };
       });
@@ -72,8 +70,12 @@ const LinksTab: React.FC<LinksTabProps> = ({ data, setData }) => {
 
   return (
     <div>
-      <div className="flex justify-end mb-4">
-        <button onClick={handleAddLink} className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-lg font-semibold text-gray-900">Links & Content</h3>
+        <button 
+          onClick={handleAddLink} 
+          className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+        >
           <Plus size={16} className="mr-1" />
           Add Link
         </button>
@@ -83,7 +85,7 @@ const LinksTab: React.FC<LinksTabProps> = ({ data, setData }) => {
         <SortableContext items={data.links.map(l => l.id)} strategy={verticalListSortingStrategy}>
           <div className="space-y-3">
             {data.links
-              .sort((a, b) => a.order - b.order) // Ensure links are sorted by the order property
+              .sort((a, b) => a.order - b.order)
               .map(link => (
                 <LinkItem 
                   key={link.id} 
@@ -95,6 +97,18 @@ const LinksTab: React.FC<LinksTabProps> = ({ data, setData }) => {
           </div>
         </SortableContext>
       </DndContext>
+
+      {data.links.length === 0 && (
+        <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded-lg">
+          <div className="text-gray-500 mb-4">No links yet</div>
+          <button
+            onClick={handleAddLink}
+            className="text-blue-600 hover:text-blue-700 font-medium"
+          >
+            Add your first link
+          </button>
+        </div>
+      )}
 
       <EditLinkModal 
         isOpen={isModalOpen}

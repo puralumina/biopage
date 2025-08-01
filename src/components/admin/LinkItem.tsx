@@ -1,8 +1,7 @@
-// src/components/admin/LinkItem.tsx
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Link as LinkType } from '../../types/pageTypes';
+import { Link as LinkType } from '../../types';
 import { GripVertical, Edit, Trash2, Image as ImageIcon } from 'lucide-react';
 
 interface LinkItemProps {
@@ -25,7 +24,7 @@ const LinkItem: React.FC<LinkItemProps> = ({ link, onEdit, onDelete }) => {
       style={style}
       className="flex items-center bg-white p-3 rounded-lg shadow-sm border border-gray-200"
     >
-      <button {...attributes} {...listeners} className="cursor-grab text-gray-400 mr-3">
+      <button {...attributes} {...listeners} className="cursor-grab text-gray-400 mr-3 hover:text-gray-600">
         <GripVertical size={20} />
       </button>
       
@@ -47,10 +46,29 @@ const LinkItem: React.FC<LinkItemProps> = ({ link, onEdit, onDelete }) => {
       </span>
       
       <div className="flex items-center space-x-2">
-        <button onClick={() => onEdit(link)} className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-md">
+        <label className="flex items-center gap-1 text-sm mr-2">
+          <input
+            type="checkbox"
+            checked={link.active}
+            onChange={() => {
+              const updatedLink = { ...link, active: !link.active };
+              onEdit(updatedLink);
+            }}
+            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          />
+          Active
+        </label>
+        
+        <button 
+          onClick={() => onEdit(link)} 
+          className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-md transition-colors"
+        >
           <Edit size={16} />
         </button>
-        <button onClick={() => onDelete(link.id)} className="p-2 text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-md">
+        <button 
+          onClick={() => onDelete(link.id)} 
+          className="p-2 text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-md transition-colors"
+        >
           <Trash2 size={16} />
         </button>
       </div>
