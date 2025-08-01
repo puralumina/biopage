@@ -478,11 +478,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
             <button
               onClick={() => {
                 onClick(link.id);
-                if (link.openInNewWindow !== false) {
-                  window.open(link.url, '_blank', 'noopener,noreferrer');
-                } else {
-                  window.location.href = link.url;
-                }
+                handleDeepLink(link.url, link.openInNewWindow !== false);
               }}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
             >
