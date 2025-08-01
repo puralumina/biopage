@@ -106,6 +106,46 @@ const defaultPageData: PageData = {
         borderColor: 'rgba(255, 255, 255, 0.2)',
         opacity: 1
       }
+    },
+    {
+      id: '8',
+      type: 'featuredProducts',
+      title: 'Featured Products',
+      url: '/shop',
+      order: 7,
+      active: true,
+      products: [
+        {
+          id: '1',
+          name: 'Camera',
+          price: 250,
+          currency: 'USD',
+          image: 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg',
+          description: 'Professional camera for photography',
+          category: 'cameras',
+          inStock: true,
+        },
+        {
+          id: '2',
+          name: 'Lens',
+          price: 150,
+          currency: 'USD',
+          image: 'https://images.pexels.com/photos/279906/pexels-photo-279906.jpeg',
+          description: 'High-quality camera lens',
+          category: 'lenses',
+          inStock: true,
+        },
+        {
+          id: '3',
+          name: 'Photography Kit',
+          price: 300,
+          currency: 'USD',
+          image: 'https://images.pexels.com/photos/51383/photo-camera-subject-photographer-51383.jpeg',
+          description: 'Complete photography starter kit',
+          category: 'accessories',
+          inStock: true,
+        },
+      ],
     }
   ],
   analytics: {

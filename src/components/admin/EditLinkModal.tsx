@@ -39,6 +39,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
     { value: 'latestYouTube', label: 'Latest YouTube' },
     { value: 'liveTwitch', label: 'Live Twitch' },
     { value: 'product', label: 'Product' },
+    { value: 'featuredProducts', label: 'Featured Products' },
   ];
 
   return (
@@ -96,6 +97,18 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                 onChange={(e) => handleInputChange('thumbnailUrl', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Layout</label>
+              <select
+                value={editedLink.layout || 'fullWidth'}
+                onChange={(e) => handleInputChange('layout', e.target.value as 'fullWidth' | 'twoColumns')}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              >
+                <option value="fullWidth">Full Width</option>
+                <option value="twoColumns">Two Columns</option>
+              </select>
             </div>
 
             {editedLink.type === 'musicEmbed' && (
@@ -185,6 +198,20 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                   placeholder={editedLink.type === 'latestYouTube' ? 'UCxxxxxxxxxxxxxx' : 'your_twitch_username'}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
+              </div>
+            )}
+
+            {editedLink.type === 'featuredProducts' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Products</label>
+                <p className="text-sm text-gray-500 mb-2">
+                  Products will be loaded from the sample data. You can modify the products in the code.
+                </p>
+                <div className="bg-gray-50 p-3 rounded-md">
+                  <p className="text-sm text-gray-600">
+                    Featured products will display as a carousel with sample products.
+                  </p>
+                </div>
               </div>
             )}
 

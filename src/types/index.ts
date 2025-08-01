@@ -51,7 +51,8 @@ export type LinkType =
   | 'photoCarousel'
   | 'latestYouTube'
   | 'liveTwitch'
-  | 'product';
+  | 'product'
+  | 'featuredProducts';
 
 export interface Link {
   id: string;
@@ -73,6 +74,8 @@ export interface Link {
   price?: string;
   currency?: string;
   channelId?: string;
+  layout?: 'fullWidth' | 'twoColumns';
+  products?: Product[];
   styling?: {
     backgroundColor?: string;
     borderColor?: string;
@@ -80,6 +83,30 @@ export interface Link {
   };
 }
 
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  currency: string;
+  image: string;
+  description: string;
+  category: string;
+  inStock: boolean;
+  stripeProductId?: string;
+  stripePriceId?: string;
+}
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+}
 export interface PageData {
   profile: Profile;
   theme: Theme;
@@ -87,6 +114,8 @@ export interface PageData {
   pixels: Pixels;
   links: Link[];
   analytics: Analytics;
+  products?: Product[];
+  categories?: Category[];
 }
 
 export interface DraftState {

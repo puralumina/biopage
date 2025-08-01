@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getPageData, trackPageView, trackLinkClick } from '../services/pageService';
 import { PageData, Link as LinkType } from '../types';
 import PixelInjector from '../components/PixelInjector';
+import ProductCarousel from '../components/ProductCarousel';
 import { Lock, MapPin, Play, ShoppingCart, ExternalLink, Music } from 'lucide-react';
 
 const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }> = ({ link, onClick }) => {
@@ -298,6 +299,20 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
         </div>
       );
 
+    case 'featuredProducts':
+      return (
+        <div className="w-full max-w-2xl">
+          <ProductCarousel 
+            products={link.products || []} 
+            title={link.title}
+            onProductClick={(productId) => {
+              onClick(link.id);
+              window.open(`/product/${productId}`, '_blank');
+            }}
+          />
+        </div>
+      );
+
     default:
       return null;
   }
@@ -418,9 +433,33 @@ const BioPage: React.FC = () => {
           </header>
 
           <div className="w-full flex flex-col items-center space-y-4">
-            {visibleLinks.map(link => (
-              <LinkBlock key={link.id} link={link} onClick={trackLinkClick} />
-            ))}
+            {visibleLinks.map(link => {
+              if (link.layout === 'twoColumns') {
+                // Find the next link that also has twoColumns layout
+                const currentIndex = visibleLinks.indexOf(link);
+                const nextLink = visibleLinks[currentIndex + 1];
+                
+                // Skip if this is the second link in a pair
+                if (currentIndex > 0 && visibleLinks[currentIndex - 1].layout === 'twoColumns') {
+                  return null;
+                }
+                
+                return (
+                  <div key={link.id} className="w-full max-w-2xl grid grid-cols-2 gap-4">
+                    <div className="w-full">
+                      <LinkBlock link={link} onClick={trackLinkClick} />
+                    </div>
+                    {nextLink && nextLink.layout === 'twoColumns' && (
+                      <div className="w-full">
+                        <LinkBlock link={nextLink} onClick={trackLinkClick} />
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+              
+              return <LinkBlock key={link.id} link={link} onClick={trackLinkClick} />;
+            })}
           </div>
 
           <footer className="mt-16 mb-8 text-center">
