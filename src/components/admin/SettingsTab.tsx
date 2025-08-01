@@ -131,6 +131,95 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ data, setData }) => {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none" 
             />
           </div>
+          
+          <div>
+            <h4 className="text-md font-semibold text-gray-900 mb-3">Text Colors</h4>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Name Color</label>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    value={data.profile.nameColor || '#ffffff'} 
+                    onChange={(e) => handleUpdate('profile', 'nameColor', e.target.value)} 
+                    className="w-12 h-10 rounded border border-gray-300" 
+                  />
+                  <input 
+                    type="text" 
+                    value={data.profile.nameColor || '#ffffff'} 
+                    onChange={(e) => handleUpdate('profile', 'nameColor', e.target.value)} 
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Subtitle Color</label>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    value={data.profile.subtitleColor || '#bfdbfe'} 
+                    onChange={(e) => handleUpdate('profile', 'subtitleColor', e.target.value)} 
+                    className="w-12 h-10 rounded border border-gray-300" 
+                  />
+                  <input 
+                    type="text" 
+                    value={data.profile.subtitleColor || '#bfdbfe'} 
+                    onChange={(e) => handleUpdate('profile', 'subtitleColor', e.target.value)} 
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Location Color</label>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    value={data.profile.locationColor || 'rgba(255, 255, 255, 0.8)'} 
+                    onChange={(e) => handleUpdate('profile', 'locationColor', e.target.value)} 
+                    className="w-12 h-10 rounded border border-gray-300" 
+                  />
+                  <input 
+                    type="text" 
+                    value={data.profile.locationColor || 'rgba(255, 255, 255, 0.8)'} 
+                    onChange={(e) => handleUpdate('profile', 'locationColor', e.target.value)} 
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Bio Color</label>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    value={data.profile.bioColor || 'rgba(255, 255, 255, 0.9)'} 
+                    onChange={(e) => handleUpdate('profile', 'bioColor', e.target.value)} 
+                    className="w-12 h-10 rounded border border-gray-300" 
+                  />
+                  <input 
+                    type="text" 
+                    value={data.profile.bioColor || 'rgba(255, 255, 255, 0.9)'} 
+                    onChange={(e) => handleUpdate('profile', 'bioColor', e.target.value)} 
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <button
+              onClick={() => {
+                handleUpdate('profile', 'nameColor', '#ffffff');
+                handleUpdate('profile', 'subtitleColor', '#bfdbfe');
+                handleUpdate('profile', 'locationColor', 'rgba(255, 255, 255, 0.8)');
+                handleUpdate('profile', 'bioColor', 'rgba(255, 255, 255, 0.9)');
+              }}
+              className="mt-3 text-sm text-gray-500 hover:text-gray-700"
+            >
+              Reset to Default Colors
+            </button>
+          </div>
         </div>
       </div>
 

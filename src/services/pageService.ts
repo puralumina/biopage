@@ -11,6 +11,10 @@ const defaultPageData: PageData = {
     location: 'Douala, Cameroon',
     bio: 'I create captivating visuals and user experiences. Let\'s collaborate!',
     imageUrl: 'https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-1/526285757_122248344026224158_2650356844423284755_n.jpg',
+    nameColor: '#ffffff',
+    subtitleColor: '#bfdbfe',
+    locationColor: 'rgba(255, 255, 255, 0.8)',
+    bioColor: 'rgba(255, 255, 255, 0.9)',
   },
   theme: {
     preset: 'Default Light',

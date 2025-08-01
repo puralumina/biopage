@@ -9,6 +9,10 @@ export interface Profile {
   location: string;
   bio: string;
   imageUrl: string;
+  nameColor?: string;
+  subtitleColor?: string;
+  locationColor?: string;
+  bioColor?: string;
 }
 
 export interface Theme {

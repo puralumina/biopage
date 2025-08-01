@@ -588,10 +588,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'textSection':
       return (
-        <div 
-          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg p-4"
-          style={getBlockStyle(link)}
-        >
+        <div className="w-full max-w-2xl">
           <div className="space-y-4">
             {(link.textContent || []).map((textItem, index) => {
               const textStyles: React.CSSProperties = {
@@ -749,15 +746,38 @@ const BioPage: React.FC = () => {
               alt={profile.name} 
               className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-white/20"
             />
-            <h1 className="text-3xl font-bold text-white">{profile.name}</h1>
-            <p className="text-lg text-blue-200 mt-1">{profile.subtitle}</p>
+            <h1 
+              className="text-3xl font-bold" 
+              style={{ color: profile.nameColor || '#ffffff' }}
+            >
+              {profile.name}
+            </h1>
+            <p 
+              className="text-lg mt-1" 
+              style={{ color: profile.subtitleColor || '#bfdbfe' }}
+            >
+              {profile.subtitle}
+            </p>
             {profile.location && (
-              <div className="flex items-center gap-1 text-white/80 mt-2">
-                <MapPin className="w-4 h-4" />
-                <p className="text-sm">{profile.location}</p>
+              <div className="flex items-center gap-1 mt-2">
+                <MapPin 
+                  className="w-4 h-4" 
+                  style={{ color: profile.locationColor || 'rgba(255, 255, 255, 0.8)' }}
+                />
+                <p 
+                  className="text-sm" 
+                  style={{ color: profile.locationColor || 'rgba(255, 255, 255, 0.8)' }}
+                >
+                  {profile.location}
+                </p>
               </div>
             )}
-            <p className="max-w-md mt-4 text-base text-white/90">{profile.bio}</p>
+            <p 
+              className="max-w-md mt-4 text-base" 
+              style={{ color: profile.bioColor || 'rgba(255, 255, 255, 0.9)' }}
+            >
+              {profile.bio}
+            </p>
           </header>
 
           <div className="w-full flex flex-col items-center space-y-4">
