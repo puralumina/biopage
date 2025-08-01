@@ -5,6 +5,139 @@ import { getPageData, trackLinkClick, trackPageView } from '../services/pageServ
 import PixelInjector from '../components/PixelInjector';
 import ProductCarousel from '../components/ProductCarousel';
 
+const getDeepLinkUrl = (url: string): string => {
+  // YouTube deep linking
+  if (url.includes('youtube.com/watch?v=')) {
+    const videoId = url.split('v=')[1]?.split('&')[0];
+    return `youtube://watch?v=${videoId}`;
+  }
+  if (url.includes('youtu.be/')) {
+    const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+    return `youtube://watch?v=${videoId}`;
+  }
+  if (url.includes('youtube.com/channel/')) {
+    const channelId = url.split('channel/')[1]?.split('?')[0];
+    return `youtube://channel/${channelId}`;
+  }
+  if (url.includes('youtube.com/@')) {
+    const handle = url.split('@')[1]?.split('?')[0];
+    return `youtube://user/${handle}`;
+  }
+
+  // Facebook deep linking
+  if (url.includes('facebook.com/') || url.includes('fb.com/')) {
+    const path = url.split('.com/')[1];
+    return `fb://profile/${path}`;
+  }
+
+  // Instagram deep linking
+  if (url.includes('instagram.com/')) {
+    const username = url.split('instagram.com/')[1]?.split('/')[0];
+    return `instagram://user?username=${username}`;
+  }
+
+  // TikTok deep linking
+  if (url.includes('tiktok.com/@')) {
+    const username = url.split('@')[1]?.split('?')[0];
+    return `tiktok://user/${username}`;
+  }
+  if (url.includes('tiktok.com/') && url.includes('/video/')) {
+    const videoId = url.split('/video/')[1]?.split('?')[0];
+    return `tiktok://video/${videoId}`;
+  }
+
+  // Twitter/X deep linking
+  if (url.includes('twitter.com/') || url.includes('x.com/')) {
+    const username = url.split('.com/')[1]?.split('/')[0];
+    return `twitter://user?screen_name=${username}`;
+  }
+
+  // Twitch deep linking
+  if (url.includes('twitch.tv/')) {
+    const channel = url.split('twitch.tv/')[1]?.split('?')[0];
+    return `twitch://stream/${channel}`;
+  }
+
+  // Spotify deep linking
+  if (url.includes('open.spotify.com/')) {
+    return url.replace('open.spotify.com', 'spotify');
+  }
+
+  // Apple Music deep linking
+  if (url.includes('music.apple.com/')) {
+    return url.replace('https://music.apple.com', 'music');
+  }
+
+  // LinkedIn deep linking
+  if (url.includes('linkedin.com/in/')) {
+    const profile = url.split('/in/')[1]?.split('?')[0];
+    return `linkedin://profile/${profile}`;
+  }
+  if (url.includes('linkedin.com/company/')) {
+    const company = url.split('/company/')[1]?.split('?')[0];
+    return `linkedin://company/${company}`;
+  }
+
+  // Snapchat deep linking
+  if (url.includes('snapchat.com/add/')) {
+    const username = url.split('/add/')[1]?.split('?')[0];
+    return `snapchat://add/${username}`;
+  }
+
+  // WhatsApp deep linking
+  if (url.includes('wa.me/')) {
+    const number = url.split('wa.me/')[1]?.split('?')[0];
+    return `whatsapp://send?phone=${number}`;
+  }
+
+  // Telegram deep linking
+  if (url.includes('t.me/')) {
+    const username = url.split('t.me/')[1]?.split('?')[0];
+    return `tg://resolve?domain=${username}`;
+  }
+
+  // Pinterest deep linking
+  if (url.includes('pinterest.com/')) {
+    const username = url.split('pinterest.com/')[1]?.split('/')[0];
+    return `pinterest://user/${username}`;
+  }
+
+  // Return original URL if no deep link pattern matches
+  return url;
+};
+
+const handleDeepLink = (url: string, openInNewWindow: boolean = true) => {
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  if (isMobile) {
+    const deepLinkUrl = getDeepLinkUrl(url);
+    
+    if (deepLinkUrl !== url) {
+      // Try to open the app first
+      const appLink = document.createElement('a');
+      appLink.href = deepLinkUrl;
+      appLink.click();
+      
+      // Fallback to web URL after a short delay if app doesn't open
+      setTimeout(() => {
+        if (openInNewWindow) {
+          window.open(url, '_blank', 'noopener,noreferrer');
+        } else {
+          window.location.href = url;
+        }
+      }, 1000);
+      
+      return;
+    }
+  }
+  
+  // Default behavior for desktop or non-deep-linkable URLs
+  if (openInNewWindow) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } else {
+    window.location.href = url;
+  }
+};
 const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }> = ({ link, onClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -48,11 +181,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
       const enteredPassword = prompt('This link is password protected. Please enter the password:');
       if (enteredPassword === link.password) {
         onClick(link.id);
-        if (link.openInNewWindow !== false) {
-          window.open(link.url, '_blank', 'noopener,noreferrer');
-        } else {
-          window.location.href = link.url;
-        }
+        handleDeepLink(link.url, link.openInNewWindow !== false);
       } else if (enteredPassword !== null) {
         alert('Incorrect password.');
       }
@@ -80,7 +209,13 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           href={link.url}
           target={link.openInNewWindow !== false ? "_blank" : "_self"}
           rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
-          onClick={handleProtectedClick}
+          onClick={(e) => {
+            e.preventDefault();
+            handleProtectedClick(e);
+            if (!link.password) {
+              handleDeepLink(link.url, link.openInNewWindow !== false);
+            }
+          }}
           className="group w-full max-w-2xl backdrop-blur-sm border p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
           style={getBlockStyle(link)}
         >
@@ -124,7 +259,11 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           href={link.url}
           target={link.openInNewWindow !== false ? "_blank" : "_self"}
           rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
-          onClick={() => onClick(link.id)}
+          onClick={(e) => {
+            e.preventDefault();
+            onClick(link.id);
+            handleDeepLink(link.url, link.openInNewWindow !== false);
+          }}
           className="group w-full max-w-2xl backdrop-blur-sm border p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
           style={getBlockStyle(link)}
         >
@@ -165,6 +304,19 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
             {link.description && (
               <p className="text-sm text-white/70">{link.description}</p>
             )}
+            <a
+              href={link.url}
+              target={link.openInNewWindow !== false ? "_blank" : "_self"}
+              rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
+              onClick={(e) => {
+                e.preventDefault();
+                onClick(link.id);
+                handleDeepLink(link.url, link.openInNewWindow !== false);
+              }}
+              className="block"
+            >
+              {/* Content wrapper for click handling */}
+            </a>
           </div>
         </div>
       );
@@ -175,6 +327,17 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
           style={getBlockStyle(link)}
         >
+          <a
+            href={link.url}
+            target={link.openInNewWindow !== false ? "_blank" : "_self"}
+            rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              onClick(link.id);
+              handleDeepLink(link.url, link.openInNewWindow !== false);
+            }}
+            className="block"
+          >
           <div className="relative">
             {link.images && link.images.length > 0 && (
               <>
@@ -219,6 +382,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           <div className="p-4">
             <h3 className="font-medium text-white">{link.title}</h3>
           </div>
+          </a>
         </div>
       );
 
