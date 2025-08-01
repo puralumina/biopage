@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, ExternalLink } from 'lucide-react';
 import { PageData } from '../../types';
 
 interface MobilePreviewProps {
@@ -70,13 +70,17 @@ const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
             <div className="space-y-3">
               {visibleLinks.map((link) => (
                 <div key={link.id} className="transform scale-90 origin-top">
-                  <div className="w-full bg-white/10 backdrop-blur-sm border border-white/20 p-3 rounded-lg flex flex-col items-center space-y-2">
+                  <div className="w-full bg-white/10 backdrop-blur-sm border border-white/20 p-3 rounded-lg flex items-center space-x-3">
                     {link.thumbnailUrl && (
-                      <img src={link.thumbnailUrl} alt={link.title} className="w-10 h-10 rounded-md object-cover" />
+                      <img src={link.thumbnailUrl} alt={link.title} className="w-8 h-8 rounded-md object-cover flex-shrink-0" />
                     )}
-                    <div className="text-center">
-                      <p className="font-semibold text-white text-sm">{link.title}</p>
+                    <div className="flex-grow">
+                      <p className="font-semibold text-white text-sm text-left">{link.title}</p>
+                      {link.type === 'musicEmbed' && link.artist && (
+                        <p className="text-xs text-white/70 text-left">{link.artist}</p>
+                      )}
                     </div>
+                    <ExternalLink size={12} className="text-white/50 flex-shrink-0" />
                   </div>
                 </div>
               ))}

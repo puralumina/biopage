@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getPageData, trackPageView, trackLinkClick } from '../services/pageService';
 import { PageData, Link as LinkType } from '../types';
 import PixelInjector from '../components/PixelInjector';
-import { Lock, MapPin, Play, ShoppingCart, ExternalLink } from 'lucide-react';
+import { Lock, MapPin, Play, ShoppingCart, ExternalLink, Music } from 'lucide-react';
 
 const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }> = ({ link, onClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -69,13 +69,14 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           onClick={handleProtectedClick}
           className="group w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
         >
-          <div className="flex-grow flex flex-col items-center text-center space-y-2">
-            {link.thumbnailUrl && (
-              <img src={link.thumbnailUrl} alt={link.title} className="w-12 h-12 rounded-md object-cover" />
-            )}
-            <p className="font-semibold text-white">{link.title}</p>
+          {link.thumbnailUrl && (
+            <img src={link.thumbnailUrl} alt={link.title} className="w-12 h-12 rounded-md object-cover flex-shrink-0" />
+          )}
+          <div className="flex-grow">
+            <p className="font-semibold text-white text-left">{link.title}</p>
           </div>
           {link.password && <Lock size={16} className="text-white/50" />}
+          <ExternalLink size={16} className="text-white/50 flex-shrink-0" />
         </a>
       );
 
@@ -101,30 +102,32 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'musicEmbed':
       return (
-        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-lg">
-          <div className="flex items-center gap-3">
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => onClick(link.id)}
+          className="group w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
+        >
+          {link.thumbnailUrl ? (
             <img
               src={link.thumbnailUrl}
               alt={link.title}
-              className="w-16 h-16 rounded-lg object-cover"
+              className="w-12 h-12 rounded-md object-cover flex-shrink-0"
             />
-            <div className="flex-1">
-              <h3 className="font-medium text-white">{link.title}</h3>
-              <p className="text-sm text-white/70">{link.artist}</p>
+          ) : (
+            <div className="w-12 h-12 rounded-md bg-purple-600 flex items-center justify-center flex-shrink-0">
+              <Music className="w-6 h-6 text-white" />
             </div>
-            <button
-              onClick={() => {
-                onClick(link.id);
-                window.open(link.url, '_blank');
-              }}
-              className="bg-blue-600 rounded-full p-3 hover:bg-blue-700 transition-colors"
-            >
-              <div className="w-5 h-5 text-white flex items-center justify-center">
-                <div className="w-0 h-0 border-l-4 border-l-white border-t-2 border-t-transparent border-b-2 border-b-transparent ml-1"></div>
-              </div>
-            </button>
+          )}
+          <div className="flex-grow">
+            <p className="font-semibold text-white text-left">{link.title}</p>
+            {link.artist && (
+              <p className="text-sm text-white/70 text-left">{link.artist}</p>
+            )}
           </div>
-        </div>
+          <Play size={16} className="text-white/50 flex-shrink-0" />
+        </a>
       );
 
     case 'imageBanner':
