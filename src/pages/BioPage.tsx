@@ -521,7 +521,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
             >
               <ShoppingCart className="w-4 h-4" />
-              {link.stripePaymentLink ? 'Buy Now'}
+              {link.stripePaymentLink ? 'Buy Now' : 'Buy Now'}
             </button>
           </div>
         </div>
