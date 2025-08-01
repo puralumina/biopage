@@ -70,9 +70,11 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           className="group w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
         >
           {link.thumbnailUrl && (
-            <img src={link.thumbnailUrl} alt={link.title} className="w-12 h-12 rounded-md object-cover" />
+            <div className="flex-shrink-0">
+              <img src={link.thumbnailUrl} alt={link.title} className="w-12 h-12 rounded-md object-cover mx-auto" />
+            </div>
           )}
-          <div className="flex-grow text-center">
+          <div className="flex-grow text-center flex flex-col items-center">
             <p className="font-semibold text-white">{link.title}</p>
           </div>
           {link.password && <Lock size={16} className="text-white/50" />}
