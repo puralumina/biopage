@@ -478,12 +478,27 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
             <button
               onClick={() => {
                 onClick(link.id);
-                handleDeepLink(link.url, link.openInNewWindow !== false);
+                if (link.stripePaymentLink) {
+                  // Open Stripe payment link in a popup
+                  const popup = window.open(
+                    link.stripePaymentLink,
+                    'stripe-payment',
+                    'width=800,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,directories=no,status=no'
+                  );
+                  
+                  // Focus the popup if it was successfully opened
+                  if (popup) {
+                    popup.focus();
+                  }
+                } else {
+                  // Fallback to regular URL
+                  handleDeepLink(link.url, link.openInNewWindow !== false);
+                }
               }}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
             >
               <ShoppingCart className="w-4 h-4" />
-              Buy Now
+              {link.stripePaymentLink ? 'Buy Now' : 'View Product'}
             </button>
           </div>
         </div>

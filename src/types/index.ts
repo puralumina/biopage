@@ -79,6 +79,7 @@ export interface Link {
   channelId?: string;
   layout?: 'fullWidth' | 'twoColumns';
   products?: Product[];
+  stripePaymentLink?: string;
   styling?: {
     backgroundColor?: string;
     borderColor?: string;

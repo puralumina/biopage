@@ -185,6 +185,19 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                     </select>
                   </div>
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Stripe Payment Link (Optional)</label>
+                  <input
+                    type="url"
+                    value={editedLink.stripePaymentLink || ''}
+                    onChange={(e) => handleInputChange('stripePaymentLink', e.target.value)}
+                    placeholder="https://buy.stripe.com/..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Add your Stripe payment link to enable direct payments. If empty, will redirect to the URL above.
+                  </p>
+                </div>
               </>
             )}
 
