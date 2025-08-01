@@ -18,7 +18,10 @@ const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
 
   const getBackgroundStyle = () => {
     if (data.media.wallpaperUrl) {
-      return { backgroundImage: `url(${data.media.wallpaperUrl})` };
+      return { 
+        backgroundImage: `url(${data.media.wallpaperUrl})`,
+        opacity: data.media.wallpaperOpacity ? data.media.wallpaperOpacity / 100 : 1
+      };
     } else if (data.theme.backgroundType === 'gradient') {
       const gradientColors = data.theme.gradientColors.join(', ');
       return { background: `linear-gradient(${data.theme.gradientDirection}, ${gradientColors})` };

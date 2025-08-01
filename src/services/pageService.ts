@@ -27,7 +27,9 @@ const defaultPageData: PageData = {
   },
   media: {
     wallpaperUrl: '',
+    wallpaperOpacity: 100,
     videoUrl: '',
+    videoOpacity: 100,
     faviconUrl: '',
   },
   pixels: {

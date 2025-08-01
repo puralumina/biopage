@@ -722,8 +722,11 @@ const BioPage: React.FC = () => {
       >
         {media.wallpaperUrl && (
           <div
-            className="absolute inset-0 bg-cover bg-center z-0" 
-            style={{ backgroundImage: `url(${media.wallpaperUrl})` }}
+            className="absolute inset-0 bg-cover bg-center z-0"
+            style={{ 
+              backgroundImage: `url(${media.wallpaperUrl})`,
+              opacity: media.wallpaperOpacity ? media.wallpaperOpacity / 100 : 1
+            }}
           />
         )}
         {media.videoUrl && (
@@ -733,6 +736,7 @@ const BioPage: React.FC = () => {
             muted 
             playsInline 
             className="absolute inset-0 w-full h-full object-cover z-0"
+            style={{ opacity: media.videoOpacity ? media.videoOpacity / 100 : 1 }}
           >
             <source src={media.videoUrl} type="video/mp4" />
           </video>

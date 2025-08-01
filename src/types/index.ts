@@ -27,7 +27,9 @@ export interface Theme {
 
 export interface Media {
   wallpaperUrl: string;
+  wallpaperOpacity?: number;
   videoUrl: string;
+  videoOpacity?: number;
   faviconUrl: string;
 }
 

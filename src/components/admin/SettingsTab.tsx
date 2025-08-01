@@ -413,6 +413,27 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ data, setData }) => {
               onChange={(e) => handleUpdate('media', 'wallpaperUrl', e.target.value)} 
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
             />
+            {data.media.wallpaperUrl && (
+              <div className="mt-3">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Wallpaper Opacity: {data.media.wallpaperOpacity || 100}%
+                </label>
+                <input
+                  type="range"
+                  min="10"
+                  max="100"
+                  step="10"
+                  value={data.media.wallpaperOpacity || 100}
+                  onChange={(e) => handleUpdate('media', 'wallpaperOpacity', parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>10%</span>
+                  <span>50%</span>
+                  <span>100%</span>
+                </div>
+              </div>
+            )}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">📹 Video Wallpaper URL</label>
@@ -422,6 +443,27 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ data, setData }) => {
               onChange={(e) => handleUpdate('media', 'videoUrl', e.target.value)} 
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
             />
+            {data.media.videoUrl && (
+              <div className="mt-3">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Video Opacity: {data.media.videoOpacity || 100}%
+                </label>
+                <input
+                  type="range"
+                  min="10"
+                  max="100"
+                  step="10"
+                  value={data.media.videoOpacity || 100}
+                  onChange={(e) => handleUpdate('media', 'videoOpacity', parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>10%</span>
+                  <span>50%</span>
+                  <span>100%</span>
+                </div>
+              </div>
+            )}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">🌟 Favicon URL</label>
