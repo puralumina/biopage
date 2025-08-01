@@ -5,6 +5,28 @@ import { getPageData, trackLinkClick, trackPageView } from '../services/pageServ
 import PixelInjector from '../components/PixelInjector';
 import ProductCarousel from '../components/ProductCarousel';
 
+// Favicon update utility
+const updateFavicon = (faviconUrl: string) => {
+  if (!faviconUrl) return;
+  
+  // Remove existing favicon links
+  const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+  existingFavicons.forEach(link => link.remove());
+  
+  // Add new favicon
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/x-icon';
+  link.href = faviconUrl;
+  document.head.appendChild(link);
+  
+  // Also add as shortcut icon for better browser support
+  const shortcutLink = document.createElement('link');
+  shortcutLink.rel = 'shortcut icon';
+  shortcutLink.href = faviconUrl;
+  document.head.appendChild(shortcutLink);
+};
+
 const getDeepLinkUrl = (url: string): string => {
   // YouTube deep linking
   if (url.includes('youtube.com/watch?v=')) {
@@ -655,6 +677,15 @@ const BioPage: React.FC = () => {
       try {
         const data = await getPageData();
         setPageData(data);
+        
+        // Update favicon if provided
+        if (data.media.faviconUrl) {
+          updateFavicon(data.media.faviconUrl);
+        }
+        
+        // Update page title
+        document.title = data.profile.name || 'Wise FOSSI';
+        
         // Only track page view if we successfully loaded data
         if (data) {
           trackPageView();

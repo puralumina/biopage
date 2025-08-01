@@ -7,6 +7,28 @@ import Header from '../components/admin/Header';
 import ControlPanel from '../components/admin/ControlPanel';
 import MobilePreview from '../components/admin/MobilePreview';
 
+// Favicon update utility for admin preview
+const updateFavicon = (faviconUrl: string) => {
+  if (!faviconUrl) return;
+  
+  // Remove existing favicon links
+  const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+  existingFavicons.forEach(link => link.remove());
+  
+  // Add new favicon
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/x-icon';
+  link.href = faviconUrl;
+  document.head.appendChild(link);
+  
+  // Also add as shortcut icon for better browser support
+  const shortcutLink = document.createElement('link');
+  shortcutLink.rel = 'shortcut icon';
+  shortcutLink.href = faviconUrl;
+  document.head.appendChild(shortcutLink);
+};
+
 const AdminDashboard: React.FC = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -27,6 +49,11 @@ const AdminDashboard: React.FC = () => {
         const data = await getPageData();
         setDraftData(data);
         setLiveData(data);
+        
+        // Update favicon in admin as well
+        if (data.media.faviconUrl) {
+          updateFavicon(data.media.faviconUrl);
+        }
       } catch (err) {
         setError('Failed to load page data. Please try refreshing.');
         console.error(err);
@@ -59,6 +86,12 @@ const AdminDashboard: React.FC = () => {
     try {
       await savePageData(draftData);
       setLiveData(draftData);
+      
+      // Update favicon when saving changes
+      if (draftData.media.faviconUrl) {
+        updateFavicon(draftData.media.faviconUrl);
+      }
+      
       setShowSuccess(true);
       console.log('✅ Changes saved successfully! Your live site has been updated.');
       setTimeout(() => setShowSuccess(false), 2000);
