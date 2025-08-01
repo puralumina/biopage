@@ -7,9 +7,16 @@ interface MobilePreviewProps {
 }
 
 const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
-  const backgroundStyle = data.media.wallpaperUrl
-    ? { backgroundImage: `url(${data.media.wallpaperUrl})` }
-    : { background: `linear-gradient(135deg, ${data.theme.backgroundColor} 0%, #e0e7ff 100%)` };
+  const getBackgroundStyle = () => {
+    if (data.media.wallpaperUrl) {
+      return { backgroundImage: `url(${data.media.wallpaperUrl})` };
+    } else if (data.theme.backgroundType === 'gradient') {
+      const gradientColors = data.theme.gradientColors.join(', ');
+      return { background: `linear-gradient(${data.theme.gradientDirection}, ${gradientColors})` };
+    } else {
+      return { backgroundColor: data.theme.backgroundColor };
+    }
+  };
 
   const visibleLinks = data.links.filter(link => {
     if (!link.active) return false;
@@ -31,7 +38,7 @@ const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
       <div className="h-full max-h-[774px] overflow-y-auto">
         <div 
           className="min-h-full bg-cover bg-center bg-no-repeat relative"
-          style={backgroundStyle}
+          style={getBackgroundStyle()}
         >
           <div className="absolute inset-0 bg-black bg-opacity-20"></div>
           

@@ -15,6 +15,9 @@ const defaultPageData: PageData = {
   theme: {
     preset: 'Default Light',
     backgroundColor: '#F8FAFC',
+    backgroundType: 'solid',
+    gradientDirection: '135deg',
+    gradientColors: ['#F8FAFC', '#E0E7FF'],
     primaryColor: '#3B82F6',
     font: 'Inter, sans-serif',
   },

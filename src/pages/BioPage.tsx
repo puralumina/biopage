@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getPageData, trackPageView, trackLinkClick } from '../services/pageService';
 import { PageData, Link as LinkType } from '../types';
 import PixelInjector from '../components/PixelInjector';
-import { Lock, MapPin } from 'lucide-react';
+import { Lock, MapPin, Play, ShoppingCart, ExternalLink } from 'lucide-react';
 
 const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }> = ({ link, onClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -178,6 +178,100 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
         </div>
       );
 
+    case 'latestYouTube':
+      return (
+        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+          <div className="relative">
+            <img
+              src={link.thumbnailUrl || 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg'}
+              alt={link.title}
+              className="w-full h-48 object-cover"
+            />
+            <button
+              onClick={() => {
+                onClick(link.id);
+                window.open(link.url, '_blank');
+              }}
+              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-20 transition-all duration-200"
+            >
+              <div className="bg-red-600 rounded-full p-4 hover:scale-110 transition-transform">
+                <Play className="w-8 h-8 text-white fill-current" />
+              </div>
+            </button>
+            <div className="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 rounded text-xs font-medium">
+              📺 LATEST VIDEO
+            </div>
+            <div className="absolute bottom-3 left-3 text-white font-medium text-sm bg-black bg-opacity-50 px-2 py-1 rounded">
+              {link.title}
+            </div>
+          </div>
+        </div>
+      );
+
+    case 'liveTwitch':
+      return (
+        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+          <div className="relative">
+            <img
+              src={link.thumbnailUrl || 'https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg'}
+              alt={link.title}
+              className="w-full h-48 object-cover"
+            />
+            <button
+              onClick={() => {
+                onClick(link.id);
+                window.open(link.url, '_blank');
+              }}
+              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-20 transition-all duration-200"
+            >
+              <div className="bg-purple-600 rounded-full p-4 hover:scale-110 transition-transform">
+                <Play className="w-8 h-8 text-white fill-current" />
+              </div>
+            </button>
+            <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium animate-pulse">
+              🔴 LIVE
+            </div>
+            <div className="absolute bottom-3 left-3 text-white font-medium text-sm bg-black bg-opacity-50 px-2 py-1 rounded">
+              {link.title}
+            </div>
+          </div>
+        </div>
+      );
+
+    case 'product':
+      return (
+        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+          <div className="relative">
+            <img
+              src={link.thumbnailUrl || 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg'}
+              alt={link.title}
+              className="w-full h-48 object-cover"
+            />
+            {link.price && (
+              <div className="absolute top-3 right-3 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                {link.currency === 'USD' && '$'}{link.currency === 'EUR' && '€'}{link.currency === 'GBP' && '£'}{link.price}
+              </div>
+            )}
+          </div>
+          <div className="p-4">
+            <h3 className="font-medium text-white mb-2">{link.title}</h3>
+            {link.description && (
+              <p className="text-sm text-white/70 mb-3">{link.description}</p>
+            )}
+            <button
+              onClick={() => {
+                onClick(link.id);
+                window.open(link.url, '_blank');
+              }}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              Buy Now
+            </button>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }
@@ -236,17 +330,28 @@ const BioPage: React.FC = () => {
 
   const { profile, theme, media, pixels } = pageData;
 
-  const pageStyle = {
-    backgroundColor: theme.backgroundColor,
-    color: theme.primaryColor,
-    fontFamily: theme.font,
-  } as React.CSSProperties;
+  const getBackgroundStyle = () => {
+    if (theme.backgroundType === 'gradient') {
+      const gradientColors = theme.gradientColors.join(', ');
+      return {
+        background: `linear-gradient(${theme.gradientDirection}, ${gradientColors})`,
+        color: theme.primaryColor,
+        fontFamily: theme.font,
+      };
+    } else {
+      return {
+        backgroundColor: theme.backgroundColor,
+        color: theme.primaryColor,
+        fontFamily: theme.font,
+      };
+    }
+  };
 
   return (
     <>
       <PixelInjector pixels={pixels} />
       <main 
-        style={pageStyle} 
+        style={getBackgroundStyle()} 
         className="min-h-screen w-full flex flex-col items-center justify-start p-4 transition-colors duration-500 relative"
       >
         {media.wallpaperUrl && (

@@ -14,6 +14,9 @@ export interface Profile {
 export interface Theme {
   preset: 'Default Light' | 'Midnight Dark' | 'Minimalist' | 'Custom';
   backgroundColor: string;
+  backgroundType: 'solid' | 'gradient';
+  gradientDirection: string;
+  gradientColors: string[];
   primaryColor: string;
   font: string;
 }
@@ -67,6 +70,9 @@ export interface Link {
   platform?: string;
   description?: string;
   images?: string[];
+  price?: string;
+  currency?: string;
+  channelId?: string;
 }
 
 export interface PageData {
