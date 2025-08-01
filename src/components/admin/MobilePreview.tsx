@@ -86,6 +86,9 @@ const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
                     {link.thumbnailUrl && (
                       <img src={link.thumbnailUrl} alt={link.title} className="w-8 h-8 rounded-md object-cover flex-shrink-0" />
                     )}
+                    {link.type === 'textSection' && (
+                      <p className="text-xs text-white/70 text-left">Text Section</p>
+                    )}
                     <div className="flex-grow">
                       <p className="font-semibold text-white text-sm text-left">{link.title}</p>
                       {link.type === 'musicEmbed' && link.artist && (

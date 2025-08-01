@@ -53,6 +53,7 @@ export type LinkType =
   | 'liveTwitch'
   | 'product'
   | 'featuredProducts';
+  | 'textSection';
 
 export interface Link {
   id: string;
@@ -81,6 +82,18 @@ export interface Link {
     borderColor?: string;
     opacity?: number;
   };
+  textContent?: {
+    type: 'heading' | 'paragraph';
+    content: string;
+    styles: {
+      fontSize?: string;
+      fontWeight?: 'normal' | 'bold';
+      fontStyle?: 'normal' | 'italic';
+      textAlign?: 'left' | 'center' | 'right';
+      color?: string;
+      textDecoration?: 'none' | 'underline';
+    };
+  }[];
 }
 
 export interface Product {

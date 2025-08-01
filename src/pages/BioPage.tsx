@@ -335,6 +335,43 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
         </div>
       );
 
+    case 'textSection':
+      return (
+        <div 
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg p-6"
+          style={getBlockStyle(link)}
+        >
+          <div className="space-y-4">
+            {(link.textContent || []).map((textItem, index) => {
+              const textStyles: React.CSSProperties = {
+                fontSize: textItem.styles.fontSize || (textItem.type === 'heading' ? '24px' : '16px'),
+                fontWeight: textItem.styles.fontWeight || (textItem.type === 'heading' ? 'bold' : 'normal'),
+                fontStyle: textItem.styles.fontStyle || 'normal',
+                textAlign: textItem.styles.textAlign || 'left',
+                color: textItem.styles.color || '#ffffff',
+                textDecoration: textItem.styles.textDecoration || 'none',
+                lineHeight: textItem.type === 'heading' ? '1.2' : '1.6',
+                margin: 0,
+                padding: 0,
+              };
+
+              if (textItem.type === 'heading') {
+                return (
+                  <h3 key={index} style={textStyles}>
+                    {textItem.content}
+                  </h3>
+                );
+              } else {
+                return (
+                  <p key={index} style={textStyles}>
+                    {textItem.content}
+                  </p>
+                );
+              }
+            })}
+          </div>
+        </div>
+      );
     default:
       return null;
   }

@@ -40,6 +40,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
     { value: 'liveTwitch', label: 'Live Twitch' },
     { value: 'product', label: 'Product' },
     { value: 'featuredProducts', label: 'Featured Products' },
+    { value: 'textSection', label: 'Text Section' },
   ];
 
   return (
@@ -215,6 +216,226 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
               </div>
             )}
 
+            {editedLink.type === 'textSection' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Text Content</label>
+                <div className="space-y-4">
+                  {(editedLink.textContent || []).map((textItem, index) => (
+                    <div key={index} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <select
+                          value={textItem.type}
+                          onChange={(e) => {
+                            const newTextContent = [...(editedLink.textContent || [])];
+                            newTextContent[index] = {
+                              ...textItem,
+                              type: e.target.value as 'heading' | 'paragraph'
+                            };
+                            handleInputChange('textContent', newTextContent);
+                          }}
+                          className="px-3 py-1 border border-gray-300 rounded-md text-sm"
+                        >
+                          <option value="heading">Heading</option>
+                          <option value="paragraph">Paragraph</option>
+                        </select>
+                        <button
+                          onClick={() => {
+                            const newTextContent = (editedLink.textContent || []).filter((_, i) => i !== index);
+                            handleInputChange('textContent', newTextContent);
+                          }}
+                          className="text-red-600 hover:text-red-700 text-sm"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                        <textarea
+                          value={textItem.content}
+                          onChange={(e) => {
+                            const newTextContent = [...(editedLink.textContent || [])];
+                            newTextContent[index] = {
+                              ...textItem,
+                              content: e.target.value
+                            };
+                            handleInputChange('textContent', newTextContent);
+                          }}
+                          rows={textItem.type === 'heading' ? 1 : 3}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm resize-none"
+                        />
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Font Size</label>
+                          <select
+                            value={textItem.styles.fontSize || (textItem.type === 'heading' ? '24px' : '16px')}
+                            onChange={(e) => {
+                              const newTextContent = [...(editedLink.textContent || [])];
+                              newTextContent[index] = {
+                                ...textItem,
+                                styles: { ...textItem.styles, fontSize: e.target.value }
+                              };
+                              handleInputChange('textContent', newTextContent);
+                            }}
+                            className="w-full px-3 py-1 border border-gray-300 rounded-md text-sm"
+                          >
+                            <option value="12px">12px</option>
+                            <option value="14px">14px</option>
+                            <option value="16px">16px</option>
+                            <option value="18px">18px</option>
+                            <option value="20px">20px</option>
+                            <option value="24px">24px</option>
+                            <option value="28px">28px</option>
+                            <option value="32px">32px</option>
+                          </select>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Text Align</label>
+                          <select
+                            value={textItem.styles.textAlign || 'left'}
+                            onChange={(e) => {
+                              const newTextContent = [...(editedLink.textContent || [])];
+                              newTextContent[index] = {
+                                ...textItem,
+                                styles: { ...textItem.styles, textAlign: e.target.value as 'left' | 'center' | 'right' }
+                              };
+                              handleInputChange('textContent', newTextContent);
+                            }}
+                            className="w-full px-3 py-1 border border-gray-300 rounded-md text-sm"
+                          >
+                            <option value="left">Left</option>
+                            <option value="center">Center</option>
+                            <option value="right">Right</option>
+                          </select>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Text Color</label>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="color"
+                              value={textItem.styles.color || '#ffffff'}
+                              onChange={(e) => {
+                                const newTextContent = [...(editedLink.textContent || [])];
+                                newTextContent[index] = {
+                                  ...textItem,
+                                  styles: { ...textItem.styles, color: e.target.value }
+                                };
+                                handleInputChange('textContent', newTextContent);
+                              }}
+                              className="w-8 h-8 rounded border border-gray-300"
+                            />
+                            <input
+                              type="text"
+                              value={textItem.styles.color || '#ffffff'}
+                              onChange={(e) => {
+                                const newTextContent = [...(editedLink.textContent || [])];
+                                newTextContent[index] = {
+                                  ...textItem,
+                                  styles: { ...textItem.styles, color: e.target.value }
+                                };
+                                handleInputChange('textContent', newTextContent);
+                              }}
+                              className="flex-1 px-2 py-1 border border-gray-300 rounded-md text-sm font-mono"
+                            />
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Style Options</label>
+                          <div className="flex gap-2">
+                            <label className="flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={textItem.styles.fontWeight === 'bold'}
+                                onChange={(e) => {
+                                  const newTextContent = [...(editedLink.textContent || [])];
+                                  newTextContent[index] = {
+                                    ...textItem,
+                                    styles: { 
+                                      ...textItem.styles, 
+                                      fontWeight: e.target.checked ? 'bold' : 'normal' 
+                                    }
+                                  };
+                                  handleInputChange('textContent', newTextContent);
+                                }}
+                                className="mr-1"
+                              />
+                              <span className="text-sm font-bold">B</span>
+                            </label>
+                            <label className="flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={textItem.styles.fontStyle === 'italic'}
+                                onChange={(e) => {
+                                  const newTextContent = [...(editedLink.textContent || [])];
+                                  newTextContent[index] = {
+                                    ...textItem,
+                                    styles: { 
+                                      ...textItem.styles, 
+                                      fontStyle: e.target.checked ? 'italic' : 'normal' 
+                                    }
+                                  };
+                                  handleInputChange('textContent', newTextContent);
+                                }}
+                                className="mr-1"
+                              />
+                              <span className="text-sm italic">I</span>
+                            </label>
+                            <label className="flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={textItem.styles.textDecoration === 'underline'}
+                                onChange={(e) => {
+                                  const newTextContent = [...(editedLink.textContent || [])];
+                                  newTextContent[index] = {
+                                    ...textItem,
+                                    styles: { 
+                                      ...textItem.styles, 
+                                      textDecoration: e.target.checked ? 'underline' : 'none' 
+                                    }
+                                  };
+                                  handleInputChange('textContent', newTextContent);
+                                }}
+                                className="mr-1"
+                              />
+                              <span className="text-sm underline">U</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <button
+                    onClick={() => {
+                      const newTextContent = [
+                        ...(editedLink.textContent || []),
+                        {
+                          type: 'paragraph' as const,
+                          content: 'New text content',
+                          styles: {
+                            fontSize: '16px',
+                            fontWeight: 'normal' as const,
+                            fontStyle: 'normal' as const,
+                            textAlign: 'left' as const,
+                            color: '#ffffff',
+                            textDecoration: 'none' as const,
+                          }
+                        }
+                      ];
+                      handleInputChange('textContent', newTextContent);
+                    }}
+                    className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 hover:border-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    + Add Text Element
+                  </button>
+                </div>
+              </div>
+            )}
             <div className="space-y-3">
               <label className="flex items-center gap-2">
                 <input
