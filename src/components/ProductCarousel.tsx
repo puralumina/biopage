@@ -42,7 +42,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title, onPr
   }
 
   return (
-    <div className="w-full backdrop-blur-sm border rounded-lg p-6">
+    <div className="w-full backdrop-blur-sm border rounded-lg p-6" style={{ backgroundColor: 'inherit' }}>
       <h3 className="text-xl font-bold text-white mb-4">{title}</h3>
       <Slider {...settings}>
         {products.map((product) => (
@@ -50,7 +50,6 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title, onPr
             <div 
               className="bg-white/5 rounded-lg overflow-hidden cursor-pointer hover:bg-white/10 transition-all duration-300"
               onClick={() => {
-                onClick(link.id);
                 handleDeepLink(`/product/${product.id}`, true);
               }}
             >

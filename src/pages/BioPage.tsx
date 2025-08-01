@@ -295,7 +295,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
               loading="lazy"
             />
           </div>
-          <div className="p-3 bg-black/20 backdrop-blur-sm">
+          <div className="p-3" style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
             <h3 className="font-medium text-white text-center">{link.title}</h3>
           </div>
         </div>
@@ -338,8 +338,16 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'imageBanner':
       return (
-        <div 
-          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+        <a
+          href={link.url}
+          target={link.openInNewWindow !== false ? "_blank" : "_self"}
+          rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
+          onClick={(e) => {
+            e.preventDefault();
+            onClick(link.id);
+            handleDeepLink(link.url, link.openInNewWindow !== false);
+          }}
+          className="block w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden hover:opacity-90 transition-all duration-300"
           style={getBlockStyle(link)}
         >
           <img
@@ -352,40 +360,24 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
             {link.description && (
               <p className="text-sm text-white/70">{link.description}</p>
             )}
-            <a
-              href={link.url}
-              target={link.openInNewWindow !== false ? "_blank" : "_self"}
-              rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
-              onClick={(e) => {
-                e.preventDefault();
-                onClick(link.id);
-                handleDeepLink(link.url, link.openInNewWindow !== false);
-              }}
-              className="block"
-            >
-              {/* Content wrapper for click handling */}
-            </a>
           </div>
-        </div>
+        </a>
       );
 
     case 'photoCarousel':
       return (
-        <div 
-          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+        <a
+          href={link.url}
+          target={link.openInNewWindow !== false ? "_blank" : "_self"}
+          rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
+          onClick={(e) => {
+            e.preventDefault();
+            onClick(link.id);
+            handleDeepLink(link.url, link.openInNewWindow !== false);
+          }}
+          className="block w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden hover:opacity-90 transition-all duration-300"
           style={getBlockStyle(link)}
         >
-          <a
-            href={link.url}
-            target={link.openInNewWindow !== false ? "_blank" : "_self"}
-            rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
-            onClick={(e) => {
-              e.preventDefault();
-              onClick(link.id);
-              handleDeepLink(link.url, link.openInNewWindow !== false);
-            }}
-            className="block"
-          >
           <div className="relative">
             {link.images && link.images.length > 0 && (
               <>
@@ -397,7 +389,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
                 {link.images.length > 1 && (
                   <>
                     <button
-                      onClick={prevImage}
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); prevImage(); }}
                       className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all"
                     >
                       <div className="w-4 h-4 flex items-center justify-center">
@@ -405,7 +397,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
                       </div>
                     </button>
                     <button
-                      onClick={nextImage}
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); nextImage(); }}
                       className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all"
                     >
                       <div className="w-4 h-4 flex items-center justify-center">
@@ -430,14 +422,13 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           <div className="p-4">
             <h3 className="font-medium text-white">{link.title}</h3>
           </div>
-          </a>
-        </div>
+        </a>
       );
 
     case 'latestYouTube':
       return (
         <div 
-          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden hover:opacity-90 transition-all duration-300"
           style={getBlockStyle(link)}
         >
           <div className="relative">
@@ -470,7 +461,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
     case 'liveTwitch':
       return (
         <div 
-          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden hover:opacity-90 transition-all duration-300"
           style={getBlockStyle(link)}
         >
           <div className="relative">
@@ -503,7 +494,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
     case 'product':
       return (
         <div 
-          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden hover:opacity-90 transition-all duration-300"
           style={getBlockStyle(link)}
         >
           {link.thumbnailType === 'video' && link.thumbnailUrl ? (
@@ -583,7 +574,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'featuredProducts':
       return (
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-2xl" style={getBlockStyle(link)}>
           <ProductCarousel 
             products={link.products || []} 
             title={link.title}
@@ -597,7 +588,10 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'textSection':
       return (
-        <div className="w-full max-w-2xl">
+        <div 
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg p-4"
+          style={getBlockStyle(link)}
+        >
           <div className="space-y-4">
             {(link.textContent || []).map((textItem, index) => {
               const textStyles: React.CSSProperties = {
