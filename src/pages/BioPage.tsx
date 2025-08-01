@@ -193,10 +193,13 @@ const BioPage: React.FC = () => {
       try {
         const data = await getPageData();
         setPageData(data);
-        trackPageView();
+        // Only track page view if we successfully loaded data
+        if (data) {
+          trackPageView();
+        }
       } catch (err) {
         console.error(err);
-        setError('This page could not be loaded.');
+        setError('This page could not be loaded. Please try again later.');
       } finally {
         setLoading(false);
       }

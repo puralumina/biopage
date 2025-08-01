@@ -60,6 +60,7 @@ const AdminDashboard: React.FC = () => {
       await savePageData(draftData);
       setLiveData(draftData);
       setShowSuccess(true);
+      console.log('✅ Changes saved successfully! Your live site has been updated.');
       setTimeout(() => setShowSuccess(false), 2000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save changes. Please try again.';

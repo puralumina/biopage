@@ -114,15 +114,20 @@ export const getPageData = async (): Promise<PageData> => {
     if (docSnap.exists()) {
       return docSnap.data() as PageData;
     } else {
-      console.log("Document doesn't exist. Returning default data for public view.");
-      // For public users, we can't create the document due to security rules
-      // Return default data instead
+      console.log("Document doesn't exist. Creating default document...");
+      // Try to create the document with default data if it doesn't exist
+      try {
+        await setDoc(pageDocRef, defaultPageData);
+        return defaultPageData;
+      } catch (createError) {
+        console.log("Could not create document (likely due to permissions). Returning default data for public view.");
+        // If we can't create (no auth), return default data for public viewing
+      }
       return defaultPageData;
     }
   } catch (error) {
     console.error("Error getting page data:", error);
-    // If there's a permissions error or any other error, return default data
-    console.log("Returning default data due to error.");
+    console.log("Returning default data due to error. This might be because the document doesn't exist yet.");
     return defaultPageData;
   }
 };

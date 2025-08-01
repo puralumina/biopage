@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
-            View Live Page
+            Preview Live Site
           </a>
           
           <button
