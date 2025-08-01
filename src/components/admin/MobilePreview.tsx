@@ -89,6 +89,9 @@ const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
                     {link.type === 'textSection' && (
                       <p className="text-xs text-white/70 text-left">Text Section</p>
                     )}
+                    {link.type === 'paragraphSpacing' && (
+                      <p className="text-xs text-white/70 text-left">Spacing Block</p>
+                    )}
                     <div className="flex-grow">
                       <p className="font-semibold text-white text-sm text-left">{link.title}</p>
                       {link.type === 'musicEmbed' && link.artist && (

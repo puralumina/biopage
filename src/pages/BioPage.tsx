@@ -505,13 +505,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'textSection':
       return (
-        <div 
-          className="w-full max-w-2xl"
-          style={{
-            marginTop: `${link.topSpacing || 0}px`,
-            marginBottom: `${link.bottomSpacing || 0}px`
-          }}
-        >
+        <div className="w-full max-w-2xl">
           <div className="space-y-4">
             {(link.textContent || []).map((textItem, index) => {
               const textStyles: React.CSSProperties = {
@@ -543,6 +537,26 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           </div>
         </div>
       );
+
+    case 'paragraphSpacing':
+      const getSpacingHeight = () => {
+        switch (link.spacingSize) {
+          case 'small': return '20px';
+          case 'medium': return '40px';
+          case 'large': return '60px';
+          case 'xlarge': return '80px';
+          case 'custom': return `${link.customSpacing || 40}px`;
+          default: return '40px';
+        }
+      };
+
+      return (
+        <div 
+          className="w-full max-w-2xl"
+          style={{ height: getSpacingHeight() }}
+        />
+      );
+
     default:
       return null;
   }
