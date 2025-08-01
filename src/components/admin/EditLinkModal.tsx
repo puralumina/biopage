@@ -604,7 +604,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                       value={editedLink.schedule.start}
                       onChange={(e) => handleInputChange('schedule', { 
                         ...editedLink.schedule!, 
-                      value={editedLink.styling?.backgroundColor?.includes('rgba') ? '#ffffff' : (editedLink.styling?.backgroundColor || '#ffffff')} 
+                        start: e.target.value
                       })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
@@ -618,13 +618,9 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                         ...editedLink.schedule!, 
                         end: e.target.value 
                       })}
-                      placeholder="e.g. #ffffff or rgba(255,255,255,0.1)"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Use hex colors (#ffffff) or rgba values (rgba(255,255,255,0.1))
-                  </p>
                 </div>
               )}
             </div>
