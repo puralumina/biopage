@@ -57,28 +57,18 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
     case 'videoEmbed':
       return (
         <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
-          <div className="relative">
-            <img
-              src={link.thumbnailUrl}
-              alt={link.title}
-              className="w-full h-48 object-cover"
+          <div className="aspect-video">
+            <iframe
+              src={link.url}
+              title={link.title}
+              className="w-full h-full rounded-lg"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              onLoad={() => onClick(link.id)}
             />
-            <button
-              onClick={() => {
-                onClick(link.id);
-                window.open(link.url, '_blank');
-              }}
-              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-20 transition-all duration-200"
-            >
-              <div className="bg-white rounded-full p-3 hover:scale-110 transition-transform">
-                <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
-                  <div className="w-0 h-0 border-l-4 border-l-white border-t-2 border-t-transparent border-b-2 border-b-transparent ml-1"></div>
-                </div>
-              </div>
-            </button>
-            <div className="absolute bottom-3 left-3 text-white font-medium text-sm bg-black bg-opacity-50 px-2 py-1 rounded">
-              {link.title}
-            </div>
+          </div>
+          <div className="p-3">
+            <h3 className="font-medium text-white text-center">{link.title}</h3>
           </div>
         </div>
       );
@@ -396,6 +386,12 @@ const BioPage: React.FC = () => {
               <LinkBlock key={link.id} link={link} onClick={trackLinkClick} />
             ))}
           </div>
+
+          <footer className="mt-16 mb-8 text-center">
+            <p className="text-white/60 text-sm">
+              Copyright © 2025 Wise FOSSI. All rights reserved.
+            </p>
+          </footer>
         </div>
       </main>
     </>
