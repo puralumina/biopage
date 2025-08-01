@@ -48,7 +48,11 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
       const enteredPassword = prompt('This link is password protected. Please enter the password:');
       if (enteredPassword === link.password) {
         onClick(link.id);
-        window.open(link.url, '_blank');
+        if (link.openInNewWindow !== false) {
+          window.open(link.url, '_blank', 'noopener,noreferrer');
+        } else {
+          window.location.href = link.url;
+        }
       } else if (enteredPassword !== null) {
         alert('Incorrect password.');
       }
@@ -74,8 +78,8 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
       return (
         <a
           href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
+          target={link.openInNewWindow !== false ? "_blank" : "_self"}
+          rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
           onClick={handleProtectedClick}
           className="group w-full max-w-2xl backdrop-blur-sm border p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
           style={getBlockStyle(link)}
@@ -118,8 +122,8 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
       return (
         <a
           href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
+          target={link.openInNewWindow !== false ? "_blank" : "_self"}
+          rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
           onClick={() => onClick(link.id)}
           className="group w-full max-w-2xl backdrop-blur-sm border p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
           style={getBlockStyle(link)}

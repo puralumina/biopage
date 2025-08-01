@@ -527,6 +527,18 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
             </div>
           </div>
 
+          <div className="space-y-3">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={editedLink.openInNewWindow !== false}
+                onChange={(e) => handleInputChange('openInNewWindow', e.target.checked)}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm font-medium text-gray-700">Open in new window</span>
+            </label>
+          </div>
+
           <div className="border-t pt-4 mt-4">
             <h4 className="text-sm font-medium text-gray-900 mb-3">Block Styling</h4>
             <div className="space-y-3">
