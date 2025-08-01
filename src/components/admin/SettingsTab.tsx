@@ -36,7 +36,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ data, setData }) => {
           backgroundType: 'solid',
           gradientColors: ['#F8FAFC', '#E0E7FF'],
           primaryColor: '#3B82F6', 
-          font: 'Inter, sans-serif' 
+          font: "'Inter', sans-serif" 
         };
         break;
       case 'Midnight Dark':
@@ -45,7 +45,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ data, setData }) => {
           backgroundType: 'solid',
           gradientColors: ['#111827', '#1F2937'],
           primaryColor: '#8B5CF6', 
-          font: 'Inter, sans-serif' 
+          font: "'Inter', sans-serif" 
         };
         break;
       case 'Minimalist':
@@ -54,7 +54,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ data, setData }) => {
           backgroundType: 'solid',
           gradientColors: ['#FFFFFF', '#F3F4F6'],
           primaryColor: '#000000', 
-          font: 'Inter, sans-serif' 
+          font: "'Inter', sans-serif" 
         };
         break;
     }
@@ -296,10 +296,14 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ data, setData }) => {
               onChange={(e) => handleUpdate('theme', 'font', e.target.value)} 
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="Inter, sans-serif">Inter</option>
-              <option value="Roboto, sans-serif">Roboto</option>
-              <option value="Poppins, sans-serif">Poppins</option>
-              <option value="Montserrat, sans-serif">Montserrat</option>
+              <option value="'Inter', sans-serif">Inter</option>
+              <option value="'Open Sans', sans-serif">Open Sans</option>
+              <option value="'Lato', sans-serif">Lato</option>
+              <option value="'Montserrat', sans-serif">Montserrat</option>
+              <option value="'Raleway', sans-serif">Raleway</option>
+              <option value="'Roboto', sans-serif">Roboto</option>
+              <option value="'Poppins', sans-serif">Poppins</option>
+              <option value="'Source Sans Pro', sans-serif">Source Sans Pro</option>
             </select>
           </div>
         </div>

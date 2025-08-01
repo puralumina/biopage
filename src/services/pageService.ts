@@ -19,7 +19,7 @@ const defaultPageData: PageData = {
     gradientDirection: '135deg',
     gradientColors: ['#F8FAFC', '#E0E7FF'],
     primaryColor: '#3B82F6',
-    font: 'Inter, sans-serif',
+    font: "'Inter', sans-serif",
   },
   media: {
     wallpaperUrl: '',

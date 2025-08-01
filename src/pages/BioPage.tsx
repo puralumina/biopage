@@ -371,7 +371,7 @@ const BioPage: React.FC = () => {
       <PixelInjector pixels={pixels} />
       <main 
         style={getBackgroundStyle()} 
-        className="min-h-screen w-full flex flex-col items-center justify-start p-4 transition-colors duration-500 relative"
+        className="min-h-screen w-full flex flex-col items-center justify-start p-4 transition-all duration-500 relative"
       >
         {media.wallpaperUrl && (
           <div 
