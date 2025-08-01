@@ -87,13 +87,6 @@ const AdminLogin: React.FC = () => {
             </div>
           )}
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-            <p className="text-blue-600 text-sm">
-              <strong>Note:</strong><br />
-              Use your Firebase authentication credentials to login.
-            </p>
-          </div>
-
           <button
             type="submit"
             disabled={loading}
