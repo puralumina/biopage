@@ -42,7 +42,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title, onPr
   }
 
   return (
-    <div className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6">
+    <div className="w-full backdrop-blur-sm border rounded-lg p-6">
       <h3 className="text-xl font-bold text-white mb-4">{title}</h3>
       <Slider {...settings}>
         {products.map((product) => (

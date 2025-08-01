@@ -8,6 +8,15 @@ import { Lock, MapPin, Play, ShoppingCart, ExternalLink, Music } from 'lucide-re
 const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }> = ({ link, onClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const getBlockStyle = (link: LinkType): React.CSSProperties => {
+    const styling = link.styling || {};
+    return {
+      backgroundColor: styling.backgroundColor || 'rgba(255, 255, 255, 0.1)',
+      borderColor: styling.borderColor || 'rgba(255, 255, 255, 0.2)',
+      opacity: styling.opacity !== undefined ? styling.opacity / 100 : 1,
+    };
+  };
+
   const getEmbedUrl = (url: string) => {
     // YouTube URL conversion
     if (url.includes('youtube.com/watch?v=')) {
@@ -68,7 +77,8 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleProtectedClick}
-          className="group w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
+          className="group w-full max-w-2xl backdrop-blur-sm border p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
+          style={getBlockStyle(link)}
         >
           {link.thumbnailUrl && (
             <img src={link.thumbnailUrl} alt={link.title} className="w-12 h-12 rounded-md object-cover flex-shrink-0" />
@@ -83,7 +93,10 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'videoEmbed':
       return (
-        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+        <div 
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+          style={getBlockStyle(link)}
+        >
           <div className="aspect-video bg-black">
             <iframe
               src={getEmbedUrl(link.url)}
@@ -108,7 +121,8 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => onClick(link.id)}
-          className="group w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
+          className="group w-full max-w-2xl backdrop-blur-sm border p-4 rounded-lg flex items-center space-x-4 hover:bg-white/20 transition-all duration-300"
+          style={getBlockStyle(link)}
         >
           {link.thumbnailUrl ? (
             <img
@@ -133,7 +147,10 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'imageBanner':
       return (
-        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+        <div 
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+          style={getBlockStyle(link)}
+        >
           <img
             src={link.thumbnailUrl}
             alt={link.title}
@@ -150,7 +167,10 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'photoCarousel':
       return (
-        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+        <div 
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+          style={getBlockStyle(link)}
+        >
           <div className="relative">
             {link.images && link.images.length > 0 && (
               <>
@@ -200,7 +220,10 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'latestYouTube':
       return (
-        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+        <div 
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+          style={getBlockStyle(link)}
+        >
           <div className="relative">
             <img
               src={link.thumbnailUrl || 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg'}
@@ -230,7 +253,10 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
 
     case 'liveTwitch':
       return (
-        <div className="w-full max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+        <div 
+          className="w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden"
+          style={getBlockStyle(link)}
+        >
           <div className="relative">
             <img
               src={link.thumbnailUrl || 'https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg'}

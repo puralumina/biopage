@@ -314,7 +314,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                 <div className="flex items-center gap-3">
                   <input 
                     type="color" 
-                    value={editedLink.styling?.backgroundColor || '#ffffff'} 
+                    value={editedLink.styling?.backgroundColor || 'rgba(255, 255, 255, 0.1)'} 
                     onChange={(e) => handleInputChange('styling', { 
                       ...editedLink.styling, 
                       backgroundColor: e.target.value 
@@ -323,7 +323,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                   />
                   <input 
                     type="text" 
-                    value={editedLink.styling?.backgroundColor || '#ffffff'} 
+                    value={editedLink.styling?.backgroundColor || 'rgba(255, 255, 255, 0.1)'} 
                     onChange={(e) => handleInputChange('styling', { 
                       ...editedLink.styling, 
                       backgroundColor: e.target.value 
@@ -338,7 +338,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                 <div className="flex items-center gap-3">
                   <input 
                     type="color" 
-                    value={editedLink.styling?.borderColor || '#e5e7eb'} 
+                    value={editedLink.styling?.borderColor || 'rgba(255, 255, 255, 0.2)'} 
                     onChange={(e) => handleInputChange('styling', { 
                       ...editedLink.styling, 
                       borderColor: e.target.value 
@@ -347,7 +347,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                   />
                   <input 
                     type="text" 
-                    value={editedLink.styling?.borderColor || '#e5e7eb'} 
+                    value={editedLink.styling?.borderColor || 'rgba(255, 255, 255, 0.2)'} 
                     onChange={(e) => handleInputChange('styling', { 
                       ...editedLink.styling, 
                       borderColor: e.target.value 
@@ -359,17 +359,17 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Opacity: {Math.round((editedLink.styling?.opacity || 1) * 100)}%
+                  Opacity: {editedLink.styling?.opacity || 100}%
                 </label>
                 <input
                   type="range"
-                  min="0.1"
-                  max="1"
-                  step="0.1"
-                  value={editedLink.styling?.opacity || 1}
+                  min="10"
+                  max="100"
+                  step="10"
+                  value={editedLink.styling?.opacity || 100}
                   onChange={(e) => handleInputChange('styling', { 
                     ...editedLink.styling, 
-                    opacity: parseFloat(e.target.value) 
+                    opacity: parseInt(e.target.value) 
                   })}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
