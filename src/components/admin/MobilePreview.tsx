@@ -97,6 +97,9 @@ const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
                     {link.type === 'textSection' && (
                       <p className="text-xs text-white/70 text-left">Text Section</p>
                     )}
+                    {link.type === 'singleImage' && (
+                      <p className="text-xs text-white/70 text-left">Single Image ({link.aspectRatio || '16:9'})</p>
+                    )}
                     {link.type === 'paragraphSpacing' && (
                       <p className="text-xs text-white/70 text-left">Spacing Block</p>
                     )}

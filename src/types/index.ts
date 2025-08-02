@@ -58,7 +58,7 @@ export type LinkType =
   | 'latestYouTube'
   | 'liveTwitch'
   | 'product'
-  | 'featuredProducts';
+  | 'singleImage'
   | 'textSection'
   | 'paragraphSpacing';
 
@@ -87,6 +87,7 @@ export interface Link {
   layout?: 'fullWidth' | 'twoColumns';
   products?: Product[];
   stripePaymentLink?: string;
+  aspectRatio?: '1:1' | '4:5' | '9:16' | '16:9' | '6:4' | '4:6' | '4:3' | '3:4';
   styling?: {
     backgroundColor?: string;
     borderColor?: string;

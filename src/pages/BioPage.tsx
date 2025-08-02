@@ -594,18 +594,41 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
         </div>
       );
 
-    case 'featuredProducts':
+    case 'singleImage':
       return (
-        <div className="w-full max-w-2xl" style={getBlockStyle(link)}>
-          <ProductCarousel 
-            products={link.products || []} 
-            title={link.title}
-            onProductClick={(productId) => {
+        <a
+          href={link.url}
+          target={link.openInNewWindow !== false ? "_blank" : "_self"}
+          rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
+          onClick={(e) => {
+            e.preventDefault();
+            handleProtectedClick(e);
+            if (!link.password) {
               onClick(link.id);
-              window.open(`/product/${productId}`, '_blank');
+              handleDeepLink(link.url, link.openInNewWindow !== false);
+            }
+          }}
+          className="block w-full max-w-2xl backdrop-blur-sm border rounded-lg overflow-hidden hover:opacity-90 transition-all duration-300"
+          style={getBlockStyle(link)}
+        >
+          <div 
+            className="w-full bg-gray-200 overflow-hidden"
+            style={{
+              aspectRatio: link.aspectRatio || '16:9'
             }}
-          />
-        </div>
+          >
+            <img
+              src={link.thumbnailUrl || 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg'}
+              alt={link.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          {link.title && (
+            <div className="p-4">
+              <h3 className="font-medium text-white text-center">{link.title}</h3>
+            </div>
+          )}
+        </a>
       );
 
     case 'textSection':

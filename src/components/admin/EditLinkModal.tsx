@@ -39,7 +39,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
     { value: 'latestYouTube', label: 'Latest YouTube' },
     { value: 'liveTwitch', label: 'Live Twitch' },
     { value: 'product', label: 'Product' },
-    { value: 'featuredProducts', label: 'Featured Products' },
+    { value: 'singleImage', label: 'Single Image' },
     { value: 'textSection', label: 'Text Section' },
     { value: 'paragraphSpacing', label: 'Paragraph Spacing' },
   ];
@@ -269,16 +269,53 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
               </div>
             )}
 
-            {editedLink.type === 'featuredProducts' && (
+            {editedLink.type === 'singleImage' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Products</label>
-                <p className="text-sm text-gray-500 mb-2">
-                  Products will be loaded from the sample data. You can modify the products in the code.
-                </p>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                <input
+                  type="url"
+                  value={editedLink.thumbnailUrl || ''}
+                  onChange={(e) => handleInputChange('thumbnailUrl', e.target.value)}
+                  placeholder="https://example.com/image.jpg"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm mb-4"
+                />
+                
+                <label className="block text-sm font-medium text-gray-700 mb-2">Aspect Ratio</label>
+                <select
+                  value={editedLink.aspectRatio || '16:9'}
+                  onChange={(e) => handleInputChange('aspectRatio', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm mb-4"
+                >
+                  <option value="1:1">Square (1:1)</option>
+                  <option value="4:5">Portrait (4:5)</option>
+                  <option value="9:16">Vertical (9:16)</option>
+                  <option value="16:9">Landscape (16:9)</option>
+                  <option value="6:4">Wide (6:4)</option>
+                  <option value="4:6">Tall (4:6)</option>
+                  <option value="4:3">Classic (4:3)</option>
+                  <option value="3:4">Portrait Classic (3:4)</option>
+                </select>
+                
                 <div className="bg-gray-50 p-3 rounded-md">
-                  <p className="text-sm text-gray-600">
-                    Featured products will display as a carousel with sample products.
+                  <p className="text-sm text-gray-600 mb-2">
+                    <strong>Preview:</strong> Your image will automatically fit the selected aspect ratio without overlapping.
                   </p>
+                  {editedLink.thumbnailUrl && (
+                    <div className="mt-2">
+                      <div 
+                        className="w-full bg-gray-200 rounded overflow-hidden"
+                        style={{
+                          aspectRatio: editedLink.aspectRatio || '16:9'
+                        }}
+                      >
+                        <img
+                          src={editedLink.thumbnailUrl}
+                          alt="Preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
