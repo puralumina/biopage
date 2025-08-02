@@ -59,7 +59,7 @@ const sampleProducts: Product[] = [
     description: 'Your financial life isn’t a spreadsheet, it’s a house with seven essential rooms. From the Foundation (emergency savings) to the Engine Room (passive income), each space plays a vital role in stability and growth. This book walks you through building, organizing, and maintaining your personal "Wealth Home," so you’re not just making money. Rather you’re creating a safe, sustainable, and scalable financial life.',
     category: 'books',
     inStock: true,
-    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_5',
+    stripePaymentLink: 'https://buy.stripe.com/7sY6oH9QKd7igM39Rl7wA01',
   },
   {
     id: '6',
