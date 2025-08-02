@@ -244,7 +244,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
     return url;
   };
   const handleProtectedClick = (e: React.MouseEvent) => {
-    if (link.password) {
+    if (link.password && link.password.trim() !== '') {
       e.preventDefault();
       const enteredPassword = prompt('This link is password protected. Please enter the password:');
       if (enteredPassword === link.password) {
@@ -279,7 +279,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
           onClick={(e) => {
             e.preventDefault();
-            if (link.password) {
+            if (link.password && link.password.trim() !== '') {
               const enteredPassword = prompt('This link is password protected. Please enter the password:');
               if (enteredPassword === link.password) {
                 onClick(link.id);
@@ -609,7 +609,7 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
           onClick={(e) => {
             e.preventDefault();
-            if (link.password) {
+            if (link.password && link.password.trim() !== '') {
               const enteredPassword = prompt('This link is password protected. Please enter the password:');
               if (enteredPassword === link.password) {
                 onClick(link.id);
