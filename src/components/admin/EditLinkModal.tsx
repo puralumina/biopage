@@ -322,6 +322,130 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
               </div>
             )}
 
+            {editedLink.type === 'buttonLink' && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Button Alignment</label>
+                  <select
+                    value={editedLink.buttonAlignment || 'center'}
+                    onChange={(e) => handleInputChange('buttonAlignment', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                  </select>
+                </div>
+                
+                <div className="border-t pt-4">
+                  <h5 className="text-sm font-medium text-gray-900 mb-3">Button Styling</h5>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
+                      <div className="flex items-center gap-3">
+                        <input 
+                          type="color" 
+                          value={editedLink.buttonStyling?.backgroundColor || '#3B82F6'} 
+                          onChange={(e) => handleInputChange('buttonStyling', { 
+                            ...editedLink.buttonStyling, 
+                            backgroundColor: e.target.value 
+                          })} 
+                          className="w-12 h-10 rounded border border-gray-300" 
+                        />
+                        <input 
+                          type="text" 
+                          value={editedLink.buttonStyling?.backgroundColor || '#3B82F6'} 
+                          onChange={(e) => handleInputChange('buttonStyling', { 
+                            ...editedLink.buttonStyling, 
+                            backgroundColor: e.target.value 
+                          })} 
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm font-mono" 
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Border Color</label>
+                      <div className="flex items-center gap-3">
+                        <input 
+                          type="color" 
+                          value={editedLink.buttonStyling?.borderColor || '#3B82F6'} 
+                          onChange={(e) => handleInputChange('buttonStyling', { 
+                            ...editedLink.buttonStyling, 
+                            borderColor: e.target.value 
+                          })} 
+                          className="w-12 h-10 rounded border border-gray-300" 
+                        />
+                        <input 
+                          type="text" 
+                          value={editedLink.buttonStyling?.borderColor || '#3B82F6'} 
+                          onChange={(e) => handleInputChange('buttonStyling', { 
+                            ...editedLink.buttonStyling, 
+                            borderColor: e.target.value 
+                          })} 
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm font-mono" 
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Border Radius</label>
+                      <select
+                        value={editedLink.buttonStyling?.borderRadius || '8px'}
+                        onChange={(e) => handleInputChange('buttonStyling', { 
+                          ...editedLink.buttonStyling, 
+                          borderRadius: e.target.value 
+                        })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      >
+                        <option value="0px">None (0px)</option>
+                        <option value="4px">Small (4px)</option>
+                        <option value="8px">Medium (8px)</option>
+                        <option value="12px">Large (12px)</option>
+                        <option value="16px">Extra Large (16px)</option>
+                        <option value="9999px">Pill Shape</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Opacity: {editedLink.buttonStyling?.opacity || 100}%
+                      </label>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        step="10"
+                        value={editedLink.buttonStyling?.opacity || 100}
+                        onChange={(e) => handleInputChange('buttonStyling', { 
+                          ...editedLink.buttonStyling, 
+                          opacity: parseInt(e.target.value) 
+                        })}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-50 p-3 rounded-md mt-4">
+                    <h5 className="text-sm font-medium text-gray-700 mb-2">Preview</h5>
+                    <div className={`flex ${editedLink.buttonAlignment === 'left' ? 'justify-start' : editedLink.buttonAlignment === 'right' ? 'justify-end' : 'justify-center'}`}>
+                      <button
+                        className="px-4 py-2 text-white font-medium border transition-colors"
+                        style={{
+                          backgroundColor: editedLink.buttonStyling?.backgroundColor || '#3B82F6',
+                          borderColor: editedLink.buttonStyling?.borderColor || '#3B82F6',
+                          borderRadius: editedLink.buttonStyling?.borderRadius || '8px',
+                          opacity: editedLink.buttonStyling?.opacity !== undefined ? editedLink.buttonStyling.opacity / 100 : 1,
+                        }}
+                      >
+                        {editedLink.title}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {editedLink.type === 'textSection' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Text Content</label>

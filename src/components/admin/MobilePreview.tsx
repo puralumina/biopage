@@ -100,6 +100,9 @@ const MobilePreview: React.FC<MobilePreviewProps> = ({ data }) => {
                     {link.type === 'singleImage' && (
                       <p className="text-xs text-white/70 text-left">Single Image ({link.aspectRatio || '16:9'})</p>
                     )}
+                    {link.type === 'buttonLink' && (
+                      <p className="text-xs text-white/70 text-left">Button ({link.buttonAlignment || 'center'})</p>
+                    )}
                     {link.type === 'paragraphSpacing' && (
                       <p className="text-xs text-white/70 text-left">Spacing Block</p>
                     )}

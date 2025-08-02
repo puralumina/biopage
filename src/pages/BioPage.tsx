@@ -699,6 +699,55 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
         />
       );
 
+    case 'buttonLink':
+      const getButtonAlignment = () => {
+        switch (link.buttonAlignment) {
+          case 'left': return 'justify-start';
+          case 'right': return 'justify-end';
+          default: return 'justify-center';
+        }
+      };
+
+      const getButtonStyle = (): React.CSSProperties => {
+        const buttonStyling = link.buttonStyling || {};
+        return {
+          backgroundColor: buttonStyling.backgroundColor || '#3B82F6',
+          borderColor: buttonStyling.borderColor || '#3B82F6',
+          borderRadius: buttonStyling.borderRadius || '8px',
+          opacity: buttonStyling.opacity !== undefined ? buttonStyling.opacity / 100 : 1,
+        };
+      };
+
+      return (
+        <div className={`w-full max-w-2xl flex ${getButtonAlignment()}`}>
+          <a
+            href={link.url}
+            target={link.openInNewWindow !== false ? "_blank" : "_self"}
+            rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              if (link.password && link.password.trim() !== '') {
+                const enteredPassword = prompt('This link is password protected. Please enter the password:');
+                if (enteredPassword === link.password) {
+                  onClick(link.id);
+                  handleDeepLink(link.url, link.openInNewWindow !== false);
+                } else if (enteredPassword !== null) {
+                  alert('Incorrect password.');
+                }
+              } else {
+                onClick(link.id);
+                handleDeepLink(link.url, link.openInNewWindow !== false);
+              }
+            }}
+            className="inline-flex items-center px-6 py-3 text-white font-medium border-2 hover:opacity-80 transition-all duration-300"
+            style={getButtonStyle()}
+          >
+            {link.title}
+            {link.password && <Lock size={16} className="ml-2 opacity-70" />}
+          </a>
+        </div>
+      );
+
     default:
       return null;
   }
