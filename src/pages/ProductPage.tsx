@@ -46,6 +46,16 @@ const sampleProducts: Product[] = [
     category: 'cameras',
     inStock: true,
   },
+  {
+    id: '5',
+    name: 'The Richest Habit',
+    price: 19.99,
+    currency: 'USD',
+    image: 'https://images.pexels.com/photos/225157/pexels-photo-225157.jpeg',
+    description: 'Forget the noise of complex financial advice. After analyzing the patterns of the world’s most successful people, one simple truth emerges: wealth isn\'t determined by a secret investment strategy, but by a single, non-negotiable daily habit. "The Richest Habit" cuts through the clutter to reveal this one core action that separates the financially independent from everyone else. This book is a short, powerful guide to understanding, adopting, and perfecting the single most profitable behavior you can implement in the next 24 hours.',
+    category: 'cameras',
+    inStock: true,
+  },
 ];
 
 const ProductPage: React.FC = () => {
