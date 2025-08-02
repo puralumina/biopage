@@ -15,7 +15,7 @@ const sampleProducts: Product[] = [
     description: 'Forget the noise of complex financial advice. After analyzing the patterns of the world’s most successful people, one simple truth emerges: wealth isn\'t determined by a secret investment strategy, but by a single, non-negotiable daily habit. "The Richest Habit" cuts through the clutter to reveal this one core action that separates the financially independent from everyone else. This book is a short, powerful guide to understanding, adopting, and perfecting the single most profitable behavior you can implement in the next 48 hours.',
     category: 'books',
     inStock: true,
-    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_1',
+    stripePaymentLink: 'https://buy.stripe.com/cNi00j0ga7MYeDV1kP7wA05',
   },
   {
     id: '2',
