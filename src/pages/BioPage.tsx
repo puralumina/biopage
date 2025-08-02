@@ -279,10 +279,17 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
           onClick={(e) => {
             e.preventDefault();
-            handleProtectedClick(e);
-            if (!link.password) {
-             // Force click tracking before navigation
-             onClick(link.id);
+            if (link.password) {
+              const enteredPassword = prompt('This link is password protected. Please enter the password:');
+              if (enteredPassword === link.password) {
+                onClick(link.id);
+                handleDeepLink(link.url, link.openInNewWindow !== false);
+              } else if (enteredPassword !== null) {
+                alert('Incorrect password.');
+              }
+            } else {
+              // Force click tracking before navigation
+              onClick(link.id);
               handleDeepLink(link.url, link.openInNewWindow !== false);
             }
           }}
@@ -602,8 +609,15 @@ const LinkBlock: React.FC<{ link: LinkType, onClick: (linkId: string) => void }>
           rel={link.openInNewWindow !== false ? "noopener noreferrer" : undefined}
           onClick={(e) => {
             e.preventDefault();
-            handleProtectedClick(e);
-            if (!link.password) {
+            if (link.password) {
+              const enteredPassword = prompt('This link is password protected. Please enter the password:');
+              if (enteredPassword === link.password) {
+                onClick(link.id);
+                handleDeepLink(link.url, link.openInNewWindow !== false);
+              } else if (enteredPassword !== null) {
+                alert('Incorrect password.');
+              }
+            } else {
               onClick(link.id);
               handleDeepLink(link.url, link.openInNewWindow !== false);
             }

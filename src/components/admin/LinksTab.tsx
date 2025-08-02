@@ -54,6 +54,17 @@ const LinksTab: React.FC<LinksTabProps> = ({ data, setData }) => {
     }
   };
   
+  const handleDuplicateLink = (linkToDuplicate: Link) => {
+    if (!data) return;
+    const duplicatedLink: Link = {
+      ...linkToDuplicate,
+      id: uuidv4(),
+      title: `${linkToDuplicate.title} (Copy)`,
+      order: data.links.length,
+    };
+    setData(prev => prev ? { ...prev, links: [...prev.links, duplicatedLink] } : null);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
@@ -92,6 +103,7 @@ const LinksTab: React.FC<LinksTabProps> = ({ data, setData }) => {
                   link={link} 
                   onEdit={handleOpenEditModal}
                   onDelete={handleDeleteLink}
+                  onDuplicate={handleDuplicateLink}
                 />
             ))}
           </div>

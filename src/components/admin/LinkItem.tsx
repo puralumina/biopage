@@ -2,15 +2,16 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Link as LinkType } from '../../types';
-import { GripVertical, Edit, Trash2, Image as ImageIcon } from 'lucide-react';
+import { GripVertical, Edit, Trash2, Copy, Image as ImageIcon } from 'lucide-react';
 
 interface LinkItemProps {
   link: LinkType;
   onEdit: (link: LinkType) => void;
   onDelete: (id: string) => void;
+  onDuplicate: (link: LinkType) => void;
 }
 
-const LinkItem: React.FC<LinkItemProps> = ({ link, onEdit, onDelete }) => {
+const LinkItem: React.FC<LinkItemProps> = ({ link, onEdit, onDelete, onDuplicate }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: link.id });
 
   const style = {
@@ -64,6 +65,13 @@ const LinkItem: React.FC<LinkItemProps> = ({ link, onEdit, onDelete }) => {
           className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-md transition-colors"
         >
           <Edit size={16} />
+        </button>
+        <button 
+          onClick={() => onDuplicate(link)} 
+          className="p-2 text-gray-500 hover:text-green-600 hover:bg-gray-100 rounded-md transition-colors"
+          title="Duplicate"
+        >
+          <Copy size={16} />
         </button>
         <button 
           onClick={() => onDelete(link.id)} 
