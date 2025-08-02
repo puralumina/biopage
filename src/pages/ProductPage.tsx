@@ -26,7 +26,7 @@ const sampleProducts: Product[] = [
     description: 'We all understand the power of compound interest for our money, but what about for our habits? This book reveals how to build your own "Compound Engine". This is a personal system where small acts of daily discipline don\'t just add up, they multiply exponentially. Learn to transform discipline from a struggle into an unstoppable force that generates momentum in your finances, career, and life. Stop trying to muscle your way to success and start building the engine that will drive you there automatically.',
     category: 'books',
     inStock: true,
-    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_2',
+    stripePaymentLink: 'https://buy.stripe.com/28E6oHd2Webm3Zh3sX7wA03',
   },
   {
     id: '3',
