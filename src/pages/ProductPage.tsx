@@ -48,7 +48,7 @@ const sampleProducts: Product[] = [
     description: 'Forget instant gratification! Real wealth is earned through the quiet power of patience. The Delayed Dividend reveals how small, consistent choices today create outsized rewards tomorrow. From compounding investments to emotional discipline and long-term systems, this book reframes waiting not as sacrifice, but as strategy. The best returns don’t rush; they arrive when you’re ready.',
     category: 'books',
     inStock: true,
-    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_4',
+    stripePaymentLink: 'https://buy.stripe.com/28E28r0gaebm53le7B7wA02',
   },
   {
     id: '5',
