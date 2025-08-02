@@ -37,7 +37,7 @@ const sampleProducts: Product[] = [
     description: 'Money isn’t just numbers. It’s a language you can learn. This book teaches you how to read, write, and think in financial fluency, turning confusion into clarity and fear into strategy. Discover how to "speak" saving, investing, and earning with purpose, so you can finally understand what your money is trying to tell you—and respond with power.',
     category: 'books',
     inStock: true,
-    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_3',
+    stripePaymentLink: 'https://buy.stripe.com/28E6oHd2Webm3Zh3sX7wA03',
   },
   {
     id: '4',
