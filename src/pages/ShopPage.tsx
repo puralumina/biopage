@@ -46,6 +46,16 @@ const sampleProducts: Product[] = [
     category: 'cameras',
     inStock: true,
   },
+  {
+    id: '5',
+    name: 'Vintage Camera',
+    price: 180,
+    currency: 'USD',
+    image: 'https://images.pexels.com/photos/225157/pexels-photo-225157.jpeg',
+    description: 'Beautiful vintage camera with classic design',
+    category: 'books',
+    inStock: true,
+  },
 ];
 
 const sampleCategories: Category[] = [
@@ -54,6 +64,12 @@ const sampleCategories: Category[] = [
     name: 'All Products',
     description: 'Browse all available products',
     image: '',
+  },
+  {
+    id: 'books',
+    name: 'books',
+    description: 'Professional and vintage cameras',
+    image: 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg',
   },
   {
     id: 'cameras',
@@ -103,7 +119,7 @@ const ShopPage: React.FC = () => {
             <div className="flex items-center space-x-4">
               <Link to="/" className="flex items-center text-gray-600 hover:text-gray-900">
                 <ArrowLeft className="w-5 h-5 mr-2" />
-                Back to Bio
+                Home
               </Link>
               <h1 className="text-2xl font-bold text-gray-900">Shop</h1>
             </div>
