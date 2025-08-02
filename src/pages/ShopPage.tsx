@@ -48,11 +48,11 @@ const sampleProducts: Product[] = [
   },
   {
     id: '5',
-    name: 'Become smart in 2 Hours',
-    price: 19.99,
+    name: 'The Richest Habit',
+    price: 14.99,
     currency: 'USD',
     image: 'https://images.pexels.com/photos/225157/pexels-photo-225157.jpeg',
-    description: 'Beautiful vintage camera with classic design',
+    description: 'The single daily action that separates the wealthy.',
     category: 'books',
     inStock: true,
   },
@@ -67,7 +67,7 @@ const sampleCategories: Category[] = [
   },
   {
     id: 'books',
-    name: 'books',
+    name: 'Books',
     description: 'Professional and vintage cameras',
     image: 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg',
   },
