@@ -7,7 +7,17 @@ import { useCart } from '../contexts/CartContext';
 // Sample products - you can modify these manually
 const sampleProducts: Product[] = [
   {
-    id: '1',
+    id: '5',
+    name: 'The Richest Habit',
+    price: 14.99,
+    currency: 'USD',
+    image: 'https://images.pexels.com/photos/225157/pexels-photo-225157.jpeg',
+    description: 'The single daily action that separates the wealthy.',
+    category: 'books',
+    inStock: true,
+  },
+  {
+    id: '6',
     name: 'Professional Camera',
     price: 250,
     currency: 'USD',
@@ -17,7 +27,7 @@ const sampleProducts: Product[] = [
     inStock: true,
   },
   {
-    id: '2',
+    id: '7',
     name: 'Camera Lens',
     price: 150,
     currency: 'USD',
@@ -27,7 +37,7 @@ const sampleProducts: Product[] = [
     inStock: true,
   },
   {
-    id: '3',
+    id: '8',
     name: 'Photography Kit',
     price: 300,
     currency: 'USD',
@@ -37,23 +47,13 @@ const sampleProducts: Product[] = [
     inStock: true,
   },
   {
-    id: '4',
+    id: '9',
     name: 'Vintage Camera',
     price: 180,
     currency: 'USD',
     image: 'https://images.pexels.com/photos/225157/pexels-photo-225157.jpeg',
     description: 'Beautiful vintage camera with classic design',
     category: 'cameras',
-    inStock: true,
-  },
-  {
-    id: '5',
-    name: 'The Richest Habit',
-    price: 14.99,
-    currency: 'USD',
-    image: 'https://images.pexels.com/photos/225157/pexels-photo-225157.jpeg',
-    description: 'The single daily action that separates the wealthy.',
-    category: 'books',
     inStock: true,
   },
 ];
