@@ -60,7 +60,8 @@ export type LinkType =
   | 'product'
   | 'singleImage'
   | 'textSection'
-  | 'paragraphSpacing';
+  | 'paragraphSpacing'
+  | 'buttonLink';
 
 export interface Link {
   id: string;
@@ -91,6 +92,13 @@ export interface Link {
   styling?: {
     backgroundColor?: string;
     borderColor?: string;
+    opacity?: number;
+  };
+  buttonAlignment?: 'left' | 'center' | 'right';
+  buttonStyling?: {
+    backgroundColor?: string;
+    borderColor?: string;
+    borderRadius?: string;
     opacity?: number;
   };
   spacingSize?: 'small' | 'medium' | 'large' | 'xlarge' | 'custom';
