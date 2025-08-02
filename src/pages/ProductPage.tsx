@@ -15,6 +15,7 @@ const sampleProducts: Product[] = [
     description: 'Forget the noise of complex financial advice. After analyzing the patterns of the world’s most successful people, one simple truth emerges: wealth isn\'t determined by a secret investment strategy, but by a single, non-negotiable daily habit. "The Richest Habit" cuts through the clutter to reveal this one core action that separates the financially independent from everyone else. This book is a short, powerful guide to understanding, adopting, and perfecting the single most profitable behavior you can implement in the next 48 hours.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_1',
   },
   {
     id: '2',
@@ -25,6 +26,7 @@ const sampleProducts: Product[] = [
     description: 'We all understand the power of compound interest for our money, but what about for our habits? This book reveals how to build your own "Compound Engine". This is a personal system where small acts of daily discipline don\'t just add up, they multiply exponentially. Learn to transform discipline from a struggle into an unstoppable force that generates momentum in your finances, career, and life. Stop trying to muscle your way to success and start building the engine that will drive you there automatically.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_2',
   },
   {
     id: '3',
@@ -35,6 +37,7 @@ const sampleProducts: Product[] = [
     description: 'Money isn’t just numbers. It’s a language you can learn. This book teaches you how to read, write, and think in financial fluency, turning confusion into clarity and fear into strategy. Discover how to "speak" saving, investing, and earning with purpose, so you can finally understand what your money is trying to tell you—and respond with power.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_3',
   },
   {
     id: '4',
@@ -45,6 +48,7 @@ const sampleProducts: Product[] = [
     description: 'Forget instant gratification! Real wealth is earned through the quiet power of patience. The Delayed Dividend reveals how small, consistent choices today create outsized rewards tomorrow. From compounding investments to emotional discipline and long-term systems, this book reframes waiting not as sacrifice, but as strategy. The best returns don’t rush; they arrive when you’re ready.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_4',
   },
   {
     id: '5',
@@ -55,6 +59,7 @@ const sampleProducts: Product[] = [
     description: 'Your financial life isn’t a spreadsheet, it’s a house with seven essential rooms. From the Foundation (emergency savings) to the Engine Room (passive income), each space plays a vital role in stability and growth. This book walks you through building, organizing, and maintaining your personal "Wealth Home," so you’re not just making money. Rather you’re creating a safe, sustainable, and scalable financial life.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_5',
   },
   {
     id: '6',
@@ -65,6 +70,7 @@ const sampleProducts: Product[] = [
     description: 'High-quality professional camera perfect for photography enthusiasts and professionals alike. Features advanced autofocus, excellent low-light performance, and durable construction that can withstand various shooting conditions.',
     category: 'cameras',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_6',
   },
   {
     id: '7',
@@ -75,6 +81,7 @@ const sampleProducts: Product[] = [
     description: 'Premium camera lens with excellent optical quality and superior build. Perfect for portrait photography, landscape shots, and professional work. Features fast autofocus and weather sealing.',
     category: 'lenses',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_7',
   },
   {
     id: '8',
@@ -85,6 +92,7 @@ const sampleProducts: Product[] = [
     description: 'Complete photography kit for beginners and professionals. Includes camera, lens, tripod, memory cards, and carrying case. Everything you need to start your photography journey.',
     category: 'accessories',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_8',
   },
   {
     id: '9',
@@ -95,6 +103,7 @@ const sampleProducts: Product[] = [
     description: 'Beautiful vintage camera with classic design and timeless appeal. Fully functional with manual controls that provide an authentic photography experience. Perfect for collectors and film photography enthusiasts.',
     category: 'cameras',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_9',
   },
 ];
 
@@ -111,7 +120,12 @@ const ProductPage: React.FC = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product, quantity);
+      // Direct Stripe payment instead of cart
+      if (product.stripePaymentLink) {
+        window.open(product.stripePaymentLink, '_blank');
+      } else {
+        alert('Payment link not configured for this product.');
+      }
     }
   };
 
@@ -191,35 +205,12 @@ const ProductPage: React.FC = () => {
 
             {product.inStock && (
               <div className="space-y-4">
-                {/* Quantity Selector */}
-                <div className="flex items-center space-x-4">
-                  <span className="text-gray-700 font-medium">Quantity:</span>
-                  <div className="flex items-center border border-gray-300 rounded-lg">
-                    <button
-                      onClick={decrementQuantity}
-                      className="p-2 hover:bg-gray-100 transition-colors"
-                    >
-                      <Minus className="w-4 h-4" />
-                    </button>
-                    <span className="px-4 py-2 border-x border-gray-300 min-w-[60px] text-center">
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={incrementQuantity}
-                      className="p-2 hover:bg-gray-100 transition-colors"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Add to Cart Button */}
+                {/* Pay Now Button */}
                 <button
                   onClick={handleAddToCart}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
                 >
-                  <ShoppingCart className="w-5 h-5" />
-                  <span>Add to Cart</span>
+                  <span>Pay Now - {product.currency === 'USD' && '$'}{product.currency === 'EUR' && '€'}{product.currency === 'GBP' && '£'}{product.price}</span>
                 </button>
               </div>
             )}

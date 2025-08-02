@@ -7,7 +7,6 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import ShopPage from './pages/ShopPage';
 import ProductPage from './pages/ProductPage';
-import CheckoutPage from './pages/CheckoutPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import Cart from './components/Cart';
 
@@ -20,7 +19,6 @@ function App() {
             <Route path="/" element={<BioPage />} />
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route 
               path="/admin" 

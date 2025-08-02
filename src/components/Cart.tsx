@@ -18,7 +18,8 @@ const Cart: React.FC = () => {
 
   const handleCheckout = () => {
     setIsOpen(false);
-    navigate('/checkout');
+    // Cart functionality removed - products now use direct Stripe payments
+    alert('Please visit individual product pages to make purchases.');
   };
 
   return (

@@ -15,6 +15,7 @@ const sampleProducts: Product[] = [
     description: 'The single daily action that separates the wealthy.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_1',
   },
   {
     id: '2',
@@ -25,6 +26,7 @@ const sampleProducts: Product[] = [
     description: 'Fuel your wealth with the power of discipline.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_2',
   },
   {
     id: '3',
@@ -35,6 +37,7 @@ const sampleProducts: Product[] = [
     description: 'Become Fluent and Start Speaking Wealth.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_3',
   },
   {
     id: '4',
@@ -45,6 +48,7 @@ const sampleProducts: Product[] = [
     description: 'Why the Best Returns Come from Patience, Not Pressure.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_4',
   },
   {
     id: '5',
@@ -55,6 +59,7 @@ const sampleProducts: Product[] = [
     description: 'Design your wealth like a living, breathing home.',
     category: 'books',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_5',
   },
   {
     id: '6',
@@ -65,6 +70,7 @@ const sampleProducts: Product[] = [
     description: 'High-quality professional camera for photography enthusiasts',
     category: 'cameras',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_6',
   },
   {
     id: '7',
@@ -75,6 +81,7 @@ const sampleProducts: Product[] = [
     description: 'Premium camera lens with excellent optical quality',
     category: 'lenses',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_7',
   },
   {
     id: '8',
@@ -85,6 +92,7 @@ const sampleProducts: Product[] = [
     description: 'Complete photography kit for beginners and professionals',
     category: 'accessories',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_8',
   },
   {
     id: '9',
@@ -95,6 +103,7 @@ const sampleProducts: Product[] = [
     description: 'Beautiful vintage camera with classic design',
     category: 'cameras',
     inStock: true,
+    stripePaymentLink: 'https://buy.stripe.com/test_your_payment_link_9',
   },
 ];
 
@@ -147,7 +156,12 @@ const ShopPage: React.FC = () => {
   }, [selectedCategory, products]);
 
   const handleAddToCart = (product: Product) => {
-    addToCart(product);
+    // Direct Stripe payment instead of cart
+    if (product.stripePaymentLink) {
+      window.open(product.stripePaymentLink, '_blank');
+    } else {
+      alert('Payment link not configured for this product.');
+    }
   };
 
   return (
@@ -221,6 +235,7 @@ const ShopPage: React.FC = () => {
                   <button
                     onClick={() => handleAddToCart(product)}
                     className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full transition-colors"
+                    title="Pay Now"
                   >
                     <ShoppingCart className="w-4 h-4" />
                   </button>
