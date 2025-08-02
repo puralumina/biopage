@@ -591,7 +591,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                     if (e.target.checked) {
                       handleInputChange('password', 'password123');
                     } else {
-                      handleInputChange('password', undefined);
+                      handleInputChange('password', '');
                     }
                   }}
                   className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
@@ -599,7 +599,7 @@ const EditLinkModal: React.FC<EditLinkModalProps> = ({ isOpen, onClose, link, on
                 <span className="text-sm font-medium text-gray-700">Password Protected</span>
               </label>
 
-              {editedLink.password && (
+              {editedLink.password && editedLink.password !== '' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
                   <input
