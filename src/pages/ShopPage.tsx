@@ -48,11 +48,11 @@ const sampleProducts: Product[] = [
   },
   {
     id: '5',
-    name: 'The Richest Habit',
+    name: 'The 7 Financial Rooms',
     price: 13.99,
     currency: 'USD',
     image: 'https://images.pexels.com/photos/225157/pexels-photo-225157.jpeg',
-    description: 'The single daily action that separates the wealthy.',
+    description: 'Design your wealth like a living, breathing home.',
     category: 'books',
     inStock: true,
   },
